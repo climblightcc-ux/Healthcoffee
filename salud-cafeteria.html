@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>PULSO·CAFÉ</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; }
+  input[type=range] { cursor: pointer; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel" data-presets="react">
+const { useState, useMemo } = React;
+
+// ─────────────────────────────────────────────
+// FÓRMULA DE SALUD
+// Salud total = Σ (puntaje de área × peso de área)
+// Los pesos suman 100%. Equipamiento e Higiene pesan
+// más porque una falla ahí puede cerrar la cafetería.
+// ─────────────────────────────────────────────
+const AREAS_INICIALES = [
+  {
+    id: "equipo",
+    nombre: "Equipamiento",
+    peso: 0.25,
+    icono: "⚙",
+    descripcion: "Máquina de espresso, molinos, refrigeración",
+    indicadores: [
+      { id: "e1", nombre: "Máquina de espresso calibrada", valor: 85 },
+      { id: "e2", nombre: "Molinos con mantenimiento al día", valor: 70 },
+      { id: "e3", nombre: "Refrigeración y equipo de barra", valor: 90 },
+    ],
+  },
+  {
+    id: "higiene",
+    nombre: "Higiene y sanidad",
+    peso: 0.25,
+    icono: "✚",
+    descripcion: "Limpieza, normativas, manejo de alimentos",
+    indicadores: [
+      { id: "h1", nombre: "Limpieza profunda de equipo", valor: 95 },
+      { id: "h2", nombre: "Certificados sanitarios vigentes", valor: 100 },
+      { id: "h3", nombre: "Manejo y almacenamiento de insumos", valor: 80 },
+    ],
+  },
+  {
+    id: "personal",
+    nombre: "Personal y capacitación",
+    peso: 0.20,
+    icono: "☺",
+    descripcion: "Baristas, servicio, rotación del equipo",
+    indicadores: [
+      { id: "p1", nombre: "Baristas con capacitación vigente", valor: 60 },
+      { id: "p2", nombre: "Rotación de personal controlada", valor: 75 },
+      { id: "p3", nombre: "Protocolo de servicio aplicado", valor: 82 },
+    ],
+  },
+  {
+    id: "finanzas",
+    nombre: "Finanzas",
+    peso: 0.15,
+    icono: "◈",
+    descripcion: "Margen, costos de insumos, punto de equilibrio",
+    indicadores: [
+      { id: "f1", nombre: "Margen por taza saludable", valor: 72 },
+      { id: "f2", nombre: "Costo de insumos bajo control", valor: 65 },
+      { id: "f3", nombre: "Ventas vs. punto de equilibrio", valor: 88 },
+    ],
+  },
+  {
+    id: "cliente",
+    nombre: "Experiencia del cliente",
+    peso: 0.15,
+    icono: "✦",
+    descripcion: "Reseñas, tiempos de espera, recompra",
+    indicadores: [
+      { id: "c1", nombre: "Calificación promedio de reseñas", valor: 90 },
+      { id: "c2", nombre: "Tiempo de espera aceptable", valor: 78 },
+      { id: "c3", nombre: "Clientes que regresan", valor: 84 },
+    ],
+  },
+];
+
+const ESPECIALISTAS = {
+  curso: [
+    { nombre: "Mariana Solís", rol: "Instructora de barismo certificada SCA", tiempo: "Responde en ~2 h", tarifa: "Desde $1,200 / sesión" },
+    { nombre: "Academia Grano Alto", rol: "Cursos de servicio y latte art", tiempo: "Responde en ~4 h", tarifa: "Desde $900 / persona" },
+  ],
+  reparacion: [
+    { nombre: "Téc. Rubén Anaya", rol: "Técnico en máquinas de espresso y molinos", tiempo: "Responde en ~1 h", tarifa: "Diagnóstico $450" },
+    { nombre: "CafeFix Taller", rol: "Refacciones y mantenimiento preventivo", tiempo: "Responde en ~3 h", tarifa: "Visita $600" },
+  ],
+  higiene: [
+    { nombre: "Lic. Paola Vergara", rol: "Consultora en normativa sanitaria", tiempo: "Responde en ~5 h", tarifa: "Auditoría $1,800" },
+  ],
+  finanzas: [
+    { nombre: "Diego Cantú", rol: "Asesor financiero para cafeterías", tiempo: "Responde en ~6 h", tarifa: "Sesión $1,000" },
+  ],
+};
+
+const TIPOS_ALERTA = [
+  { id: "curso", etiqueta: "Necesito un curso", detalle: "Capacitación para mí o mi equipo" },
+  { id: "reparacion", etiqueta: "Algo se descompuso", detalle: "Máquina, molino o equipo de barra" },
+  { id: "higiene", etiqueta: "Tema sanitario", detalle: "Normativas, auditoría o limpieza" },
+  { id: "finanzas", etiqueta: "Números en rojo", detalle: "Costos, márgenes o flujo de caja" },
+];
+
+function colorSalud(p) {
+  if (p >= 80) return "#2E7D5B";
+  if (p >= 60) return "#C88A2D";
+  return "#B5432E";
+}
+function etiquetaSalud(p) {
+  if (p >= 90) return "Excelente";
+  if (p >= 80) return "Saludable";
+  if (p >= 60) return "Requiere atención";
+  if (p >= 40) return "En riesgo";
+  return "Crítico";
+}
+
+function Medidor({ porcentaje }) {
+  const r = 84;
+  const circ = 2 * Math.PI * r;
+  const offset = circ * (1 - porcentaje / 100);
+  const col = colorSalud(porcentaje);
+  return (
+    <div style={{ position: "relative", width: 200, height: 200 }}>
+      <svg width="200" height="200" viewBox="0 0 200 200">
+        <circle cx="100" cy="100" r={r} fill="none" stroke="#E8E2D6" strokeWidth="14" />
+        <circle
+          cx="100" cy="100" r={r} fill="none"
+          stroke={col} strokeWidth="14" strokeLinecap="round"
+          strokeDasharray={circ} strokeDashoffset={offset}
+          transform="rotate(-90 100 100)"
+          style={{ transition: "stroke-dashoffset .6s ease, stroke .6s ease" }}
+        />
+      </svg>
+      <div style={{
+        position: "absolute", inset: 0, display: "flex", flexDirection: "column",
+        alignItems: "center", justifyContent: "center",
+      }}>
+        <span style={{ fontFamily: "'Fraunces', Georgia, serif", fontSize: 52, fontWeight: 600, color: "#1F2B24", lineHeight: 1 }}>
+          {Math.round(porcentaje)}
+          <span style={{ fontSize: 22, fontWeight: 400 }}>%</span>
+        </span>
+        <span style={{ fontSize: 13, letterSpacing: ".08em", textTransform: "uppercase", color: col, fontWeight: 600, marginTop: 6 }}>
+          {etiquetaSalud(porcentaje)}
+        </span>
+      </div>
+    </div>
+  );
+}
+
+function App() {
+  const [areas, setAreas] = useState(AREAS_INICIALES);
+  const [areaAbierta, setAreaAbierta] = useState(null);
+  const [alertaAbierta, setAlertaAbierta] = useState(false);
+  const [tipoAlerta, setTipoAlerta] = useState(null);
+  const [mensaje, setMensaje] = useState("");
+  const [alertasEnviadas, setAlertasEnviadas] = useState([]);
+  const [mostrarFormula, setMostrarFormula] = useState(false);
+
+  const puntajes = useMemo(
+    () =>
+      areas.map((a) => ({
+        ...a,
+        puntaje: a.indicadores.reduce((s, i) => s + i.valor, 0) / a.indicadores.length,
+      })),
+    [areas]
+  );
+
+  const saludTotal = useMemo(
+    () => puntajes.reduce((s, a) => s + a.puntaje * a.peso, 0),
+    [puntajes]
+  );
+
+  const cambiarIndicador = (areaId, indId, valor) => {
+    setAreas((prev) =>
+      prev.map((a) =>
+        a.id === areaId
+          ? { ...a, indicadores: a.indicadores.map((i) => (i.id === indId ? { ...i, valor: Number(valor) } : i)) }
+          : a
+      )
+    );
+  };
+
+  const enviarAlerta = () => {
+    if (!tipoAlerta) return;
+    const tipo = TIPOS_ALERTA.find((t) => t.id === tipoAlerta);
+    setAlertasEnviadas((prev) => [
+      { id: Date.now(), tipo, mensaje, especialistas: ESPECIALISTAS[tipoAlerta] || [], estado: "Buscando especialista…" },
+      ...prev,
+    ]);
+    setAlertaAbierta(false);
+    setTipoAlerta(null);
+    setMensaje("");
+  };
+
+  const S = styles;
+  return (
+    <div style={S.pagina}>
+      <header style={S.encabezado}>
+        <div>
+          <div style={S.marca}>PULSO<span style={{ color: "#2E7D5B" }}>·</span>CAFÉ</div>
+          <div style={S.subMarca}>El estado de salud de tu cafetería, en un solo lugar</div>
+        </div>
+        <button style={S.botonAlerta} onClick={() => setAlertaAbierta(true)}>
+          ⚑ Enviar alerta
+        </button>
+      </header>
+
+      <section style={S.tarjetaSalud}>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 32, alignItems: "center" }}>
+          <Medidor porcentaje={saludTotal} />
+          <div style={{ flex: 1, minWidth: 260 }}>
+            <div style={S.nombreCafe}>Cafetería La Espiga</div>
+            <p style={{ color: "#5C6660", margin: "8px 0 16px", lineHeight: 1.5 }}>
+              Tu salud se calcula con 5 áreas vitales. Mueve cualquier indicador y
+              el porcentaje se actualiza al instante.
+            </p>
+            <button style={S.enlaceFormula} onClick={() => setMostrarFormula(!mostrarFormula)}>
+              {mostrarFormula ? "Ocultar fórmula ▲" : "¿Cómo se calcula mi 100%? ▼"}
+            </button>
+            {mostrarFormula && (
+              <div style={S.cajaFormula}>
+                <div style={{ fontFamily: "'Fraunces', serif", fontSize: 15, marginBottom: 10 }}>
+                  Salud = Σ (puntaje de área × peso del área)
+                </div>
+                {puntajes.map((a) => (
+                  <div key={a.id} style={S.filaFormula}>
+                    <span>{a.nombre}</span>
+                    <span style={{ fontVariantNumeric: "tabular-nums" }}>
+                      {Math.round(a.puntaje)} × {Math.round(a.peso * 100)}% ={" "}
+                      <strong>{(a.puntaje * a.peso).toFixed(1)}</strong>
+                    </span>
+                  </div>
+                ))}
+                <div style={{ ...S.filaFormula, borderTop: "1px solid #D8D2C4", paddingTop: 8, fontWeight: 700 }}>
+                  <span>Total</span>
+                  <span>{saludTotal.toFixed(1)} / 100</span>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      </section>
+
+      <h2 style={S.tituloSeccion}>Áreas vitales</h2>
+      <section style={S.rejilla}>
+        {puntajes.map((a) => {
+          const abierta = areaAbierta === a.id;
+          const col = colorSalud(a.puntaje);
+          return (
+            <div key={a.id} style={{ ...S.tarjetaArea, borderTop: `4px solid ${col}` }}>
+              <button style={S.cabeceraArea} onClick={() => setAreaAbierta(abierta ? null : a.id)}>
+                <div>
+                  <div style={S.nombreArea}>{a.icono} {a.nombre}</div>
+                  <div style={S.descArea}>{a.descripcion} · peso {Math.round(a.peso * 100)}%</div>
+                </div>
+                <div style={{ ...S.puntajeArea, color: col }}>{Math.round(a.puntaje)}</div>
+              </button>
+              <div style={S.barraFondo}>
+                <div style={{ ...S.barraRelleno, width: `${a.puntaje}%`, background: col }} />
+              </div>
+              {abierta && (
+                <div style={{ marginTop: 14 }}>
+                  {a.indicadores.map((i) => (
+                    <div key={i.id} style={{ marginBottom: 12 }}>
+                      <div style={S.filaIndicador}>
+                        <span>{i.nombre}</span>
+                        <span style={{ fontWeight: 600, fontVariantNumeric: "tabular-nums" }}>{i.valor}</span>
+                      </div>
+                      <input
+                        type="range" min="0" max="100" value={i.valor}
+                        onChange={(e) => cambiarIndicador(a.id, i.id, e.target.value)}
+                        style={{ width: "100%", accentColor: col }}
+                        aria-label={i.nombre}
+                      />
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </section>
+
+      <h2 style={S.tituloSeccion}>Tus alertas</h2>
+      {alertasEnviadas.length === 0 ? (
+        <div style={S.vacio}>
+          Aún no has enviado alertas. Cuando algo falle o necesites capacitación,
+          presiona <strong>“Enviar alerta”</strong> y te conectamos con quien lo resuelve.
+        </div>
+      ) : (
+        alertasEnviadas.map((al) => (
+          <div key={al.id} style={S.tarjetaAlertaEnviada}>
+            <div style={{ display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: 8 }}>
+              <div>
+                <div style={{ fontWeight: 700 }}>{al.tipo.etiqueta}</div>
+                {al.mensaje && <div style={{ color: "#5C6660", fontSize: 14, marginTop: 2 }}>{al.mensaje}</div>}
+              </div>
+              <span style={S.estadoAlerta}>● {al.estado}</span>
+            </div>
+            <div style={{ marginTop: 14 }}>
+              <div style={S.etiquetaMini}>Especialistas disponibles</div>
+              {al.especialistas.map((e, idx) => (
+                <div key={idx} style={S.tarjetaEspecialista}>
+                  <div style={S.avatarEspecialista}>{e.nombre.charAt(0)}</div>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ fontWeight: 600 }}>{e.nombre}</div>
+                    <div style={{ fontSize: 13, color: "#5C6660" }}>{e.rol}</div>
+                    <div style={{ fontSize: 12, color: "#8A8578", marginTop: 2 }}>{e.tiempo} · {e.tarifa}</div>
+                  </div>
+                  <button style={S.botonContactar}>Contactar</button>
+                </div>
+              ))}
+            </div>
+          </div>
+        ))
+      )}
+
+      {alertaAbierta && (
+        <div style={S.fondoModal} onClick={() => setAlertaAbierta(false)}>
+          <div style={S.modal} onClick={(e) => e.stopPropagation()}>
+            <div style={{ fontFamily: "'Fraunces', serif", fontSize: 22, fontWeight: 600 }}>
+              ¿Qué necesita tu cafetería?
+            </div>
+            <p style={{ color: "#5C6660", fontSize: 14, margin: "6px 0 16px" }}>
+              Elige el tipo de alerta y te conectamos con un especialista.
+            </p>
+            <div style={{ display: "grid", gap: 10 }}>
+              {TIPOS_ALERTA.map((t) => (
+                <button
+                  key={t.id}
+                  onClick={() => setTipoAlerta(t.id)}
+                  style={{
+                    ...S.opcionAlerta,
+                    borderColor: tipoAlerta === t.id ? "#2E7D5B" : "#E0DACC",
+                    background: tipoAlerta === t.id ? "#EDF4EF" : "#FFF",
+                  }}
+                >
+                  <div style={{ fontWeight: 600 }}>{t.etiqueta}</div>
+                  <div style={{ fontSize: 13, color: "#5C6660" }}>{t.detalle}</div>
+                </button>
+              ))}
+            </div>
+            <textarea
+              placeholder="Cuéntanos más (opcional): ¿qué pasó, desde cuándo, qué tan urgente es?"
+              value={mensaje}
+              onChange={(e) => setMensaje(e.target.value)}
+              style={S.areaTexto}
+              rows={3}
+            />
+            <div style={{ display: "flex", gap: 10, marginTop: 14 }}>
+              <button style={S.botonSecundario} onClick={() => setAlertaAbierta(false)}>Cancelar</button>
+              <button
+                style={{ ...S.botonPrimario, opacity: tipoAlerta ? 1 : 0.45 }}
+                onClick={enviarAlerta}
+                disabled={!tipoAlerta}
+              >
+                Enviar alerta
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <footer style={S.pie}>PULSO·CAFÉ — prototipo de diseño · los datos son de ejemplo</footer>
+    </div>
+  );
+}
+
+const styles = {
+  pagina: {
+    minHeight: "100vh",
+    background: "#F2EFE7",
+    fontFamily: "'Public Sans', -apple-system, sans-serif",
+    color: "#1F2B24",
+    padding: "24px 20px 60px",
+    maxWidth: 880,
+    margin: "0 auto",
+  },
+  encabezado: { display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 14, marginBottom: 24 },
+  marca: { fontFamily: "'Fraunces', serif", fontSize: 26, fontWeight: 700, letterSpacing: ".02em" },
+  subMarca: { fontSize: 13, color: "#5C6660", marginTop: 2 },
+  botonAlerta: {
+    background: "#B5432E", color: "#FFF", border: "none", borderRadius: 999,
+    padding: "12px 22px", fontSize: 15, fontWeight: 700, cursor: "pointer",
+    boxShadow: "0 4px 14px rgba(181,67,46,.3)", fontFamily: "inherit",
+  },
+  tarjetaSalud: { background: "#FFFFFF", borderRadius: 20, padding: 28, boxShadow: "0 2px 10px rgba(31,43,36,.06)" },
+  nombreCafe: { fontFamily: "'Fraunces', serif", fontSize: 28, fontWeight: 600 },
+  enlaceFormula: { background: "none", border: "none", color: "#2E7D5B", fontWeight: 600, cursor: "pointer", padding: 0, fontSize: 14, fontFamily: "inherit" },
+  cajaFormula: { background: "#F7F4EC", borderRadius: 12, padding: 16, marginTop: 12, fontSize: 14 },
+  filaFormula: { display: "flex", justifyContent: "space-between", padding: "4px 0", color: "#3C463F" },
+  tituloSeccion: { fontFamily: "'Fraunces', serif", fontSize: 20, fontWeight: 600, margin: "32px 0 14px" },
+  rejilla: { display: "grid", gap: 14 },
+  tarjetaArea: { background: "#FFF", borderRadius: 16, padding: "16px 18px", boxShadow: "0 1px 6px rgba(31,43,36,.05)" },
+  cabeceraArea: { display: "flex", justifyContent: "space-between", alignItems: "center", width: "100%", background: "none", border: "none", cursor: "pointer", padding: 0, textAlign: "left", fontFamily: "inherit", color: "inherit", gap: 12 },
+  nombreArea: { fontWeight: 700, fontSize: 16 },
+  descArea: { fontSize: 13, color: "#5C6660", marginTop: 2 },
+  puntajeArea: { fontFamily: "'Fraunces', serif", fontSize: 30, fontWeight: 600 },
+  barraFondo: { height: 6, background: "#EDE9DE", borderRadius: 999, marginTop: 12, overflow: "hidden" },
+  barraRelleno: { height: "100%", borderRadius: 999, transition: "width .4s ease" },
+  filaIndicador: { display: "flex", justifyContent: "space-between", fontSize: 14, marginBottom: 4 },
+  vacio: { background: "#FBF9F3", border: "1px dashed #D8D2C4", borderRadius: 16, padding: 22, color: "#5C6660", fontSize: 14, lineHeight: 1.6 },
+  tarjetaAlertaEnviada: { background: "#FFF", borderRadius: 16, padding: 18, marginBottom: 14, boxShadow: "0 1px 6px rgba(31,43,36,.05)" },
+  estadoAlerta: { fontSize: 13, color: "#C88A2D", fontWeight: 600, alignSelf: "center" },
+  etiquetaMini: { fontSize: 12, textTransform: "uppercase", letterSpacing: ".08em", color: "#8A8578", fontWeight: 700, marginBottom: 8 },
+  tarjetaEspecialista: { display: "flex", alignItems: "center", gap: 12, padding: "10px 0", borderTop: "1px solid #F0ECE1" },
+  avatarEspecialista: { width: 42, height: 42, borderRadius: "50%", background: "#2E7D5B", color: "#FFF", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 700, fontFamily: "'Fraunces', serif", fontSize: 18, flexShrink: 0 },
+  botonContactar: { background: "#1F2B24", color: "#FFF", border: "none", borderRadius: 999, padding: "8px 16px", fontSize: 13, fontWeight: 600, cursor: "pointer", fontFamily: "inherit" },
+  fondoModal: { position: "fixed", inset: 0, background: "rgba(31,43,36,.45)", display: "flex", alignItems: "center", justifyContent: "center", padding: 20, zIndex: 50 },
+  modal: { background: "#FFF", borderRadius: 20, padding: 24, width: "100%", maxWidth: 440, maxHeight: "90vh", overflowY: "auto" },
+  opcionAlerta: { textAlign: "left", border: "2px solid", borderRadius: 12, padding: "12px 14px", cursor: "pointer", fontFamily: "inherit", color: "inherit" },
+  areaTexto: { width: "100%", marginTop: 14, border: "1px solid #E0DACC", borderRadius: 12, padding: 12, fontFamily: "inherit", fontSize: 14, resize: "vertical", boxSizing: "border-box" },
+  botonPrimario: { flex: 1, background: "#B5432E", color: "#FFF", border: "none", borderRadius: 999, padding: "12px", fontWeight: 700, cursor: "pointer", fontFamily: "inherit", fontSize: 15 },
+  botonSecundario: { flex: 1, background: "#F0ECE1", color: "#1F2B24", border: "none", borderRadius: 999, padding: "12px", fontWeight: 600, cursor: "pointer", fontFamily: "inherit", fontSize: 15 },
+  pie: { textAlign: "center", fontSize: 12, color: "#8A8578", marginTop: 40 },
+};
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(<App />);
+</script>
+</body>
+</html>
