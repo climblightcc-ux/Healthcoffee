@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>PULSO·CAFÉ — Salud operativa para cafeterías</title>
+<meta name="description" content="Mide el estado de salud de tu cafetería, gana insignias y conecta con baristas especializados cerca de ti." />
+
+<!-- PWA: manifest embebido como data URI (no requiere archivo aparte) -->
+<link rel="manifest" href="data:application/json;base64,eyJuYW1lIjogIlBVTFNPwrdDQUbDiSDigJQgU2FsdWQgb3BlcmF0aXZhIHBhcmEgY2FmZXRlcsOtYXMiLCAic2hvcnRfbmFtZSI6ICJQVUxTT8K3Q0FGw4kiLCAiZGVzY3JpcHRpb24iOiAiTWlkZSBlbCBlc3RhZG8gZGUgc2FsdWQgZGUgdHUgY2FmZXRlcsOtYSwgZ2FuYSBpbnNpZ25pYXMgeSBjb25lY3RhIGNvbiBiYXJpc3RhcyBlc3BlY2lhbGl6YWRvcyBjZXJjYSBkZSB0aS4iLCAic3RhcnRfdXJsIjogIi4iLCAic2NvcGUiOiAiLiIsICJkaXNwbGF5IjogInN0YW5kYWxvbmUiLCAib3JpZW50YXRpb24iOiAicG9ydHJhaXQiLCAiYmFja2dyb3VuZF9jb2xvciI6ICIjRUZFREU3IiwgInRoZW1lX2NvbG9yIjogIiMwQTBBMEEiLCAibGFuZyI6ICJlcy1NWCIsICJpY29ucyI6IFt7InNyYyI6ICJkYXRhOmltYWdlL3BuZztiYXNlNjQsaVZCT1J3MEtHZ29BQUFBTlNVaEVVZ0FBQU1BQUFBREFDQVlBQUFCUzNHd0hBQUFHdmtsRVFWUjRuTzNkTVU5VVdSakc4ZGZGU0NJbUZuWWtOdFlVSkJaV0ZsWVVocFlQUU9qNEF0WlMrUjBzL0FxVFVHaWhsb1JHR210TkpPRUxJQVZvM0MxMjJWMkhPek4zWnU2OTUzblA4LytWeW1ZdjU3ei9leTR6bzk2NmUvZnVud0dZK3FQMEJRQWxFUUNzRVFDc0VRQ3NFUUNzRVFDc0VRQ3NFUUNzRVFDc0VRQ3NFUUNzRVFDc0VRQ3NFUUNzRVFDc0VRQ3NFUUNzRVFDc0VRQ3NFUUNzRVFDc0VRQ3NFUUNzRVFDc0VRQ3NFUUNzRVFDc0VRQ3NFUUNzM1M1OUFiVzd1TGhZNnI5ZlcxdnI2RXJRNUJaL1BYbzNsaDMwZVJGR053aGdRVU1QL0N3RXNSZ0NtSVBhMEU5Q0RPMFJ3QXlsbitGTC8vOXJSd0FUekR0NFF3K2ErdlZsUVFCajVoa3NsYUhLZU0wcUNPQWZiWVlveS9EVTlMMzB6VDZBbW9lbDV1K3RLN1lCekJxTzJnYkQ3ZnR0eXk0QTkwRncvLzdIV1FVd2JmUGROcDYxK0p2TmgrSFk4TjlOKzU2enZPSFhoZXBQQUFaL051YzFxanFBU1J0Yis2WXV5bkc5cW4wRWN0ek1aVTFhbTVvZmlhb01nT0ZmbkZzRVZUMENNZmpkY2xqUGFrNEFoODBhbXNOcFVFVUFESDkvYW84Z2ZRQU1mNyttRFhvTkVhUU9nT0h2VjVzQnp4NUI2Z0FteWI0cENwcldzTVliUzlvQVpnMDVFU3h1MnZBM1JaQjVyVk1HMFBidWxIbGpTbW16dGpXdGRib0FuTzVPUTV2bnNhZVd0VTRWZ052ZGFXaHQxbkxXNzJkYjYxUUJqS3Y5N2xUQ3ROTjAydGRubFNhQVpmOGFrT3diTmFUU2Y1ZlJrRklFc09oTGN2UGV6YkNZekNldS9JZmhYRjZQcmtIR3ZVcHhBdnlmK29JNnk3ZzMwZ0ZrT1VZeG1mb2VTZ2N3THVNZHhrMjJQWklOUVAzT1VaTysxMXA1TDJVREdKZnR6cExGOVhCMk9hU1o5a295Z1BITnlMU2dtWXl2YzU4UnFKNENrZ0dnZnhsZnN1eURYQURjL2ZzMzFQQm5PQVhrQWtDL3VQUC9UdXFkWU83Ky9TbjV4MGVWOTVVVHdBQi9kbm95bVFBVW53OXJNT21ScCtUd0srMjFUQURqdURzdFQrVjVYM2t2WlFQQWNsU0dYNTFFQU1vL0pHV2tPUHlxTDRsS0JJRHVLQTYvTWdLb0NNTS92K0lCcUJ5RjJXVWNmb1c5THg3QU9QVk5VNVJsK0JXdjZYYnBDOERpZUlOcmVYSW5BTnBoK0x0UjlMTkF2UHk1bUN5UFBKTW83VHNuUURMWmgxOE5BU1RDOEhlUEFKSmcrUHRCQUFrdy9QMGhBSEVNZjcrS0JhRDBTb0NxV29kZjZZTnhuQUNpYWgxK05id1RMSVkzdUliRkNTQ0U0UjhlSjBBaGJaNTdHZnorY1FJVXdQRHJJSUNCTWZ4YUNFQU13ejhzQW9BMUFvQTFBaGpZdEVjY0huK0dSd0FGTkEwNncxOEc3d01Vd3NCcjRBU0FOUUtBTlFLQXRXSUJLSDBtSE1OUytyTWduQUN3eHF0QVBYcjY5R204ZmZ0MjV0ZGRYVjNGK2ZsNW5KNmV4cWRQbjJJMEdzV0hEeC9pMTY5ZkExeWxOMDRBQVhmdTNJa0hEeDdFNXVabTdPN3V4bWcwaXFPam85amMzQ3g5YWRVakFGRWJHeHZ4N3QyN2VQTGtTZWxMcVJvQkNMdDM3MTY4ZnYwNlZsZFhTMTlLdFlvRzRQcEswUDcrL3IvL1V1UDkrL2RqWTJNalhyNThHWmVYbHplKzl0R2pSL0g4K2ZNQ1Y5a1BwVmVBSWpnQml2djU4MmQ4L2ZvMVhyMTZGUWNIQjQxZjgrelpzNEd2eWdjQkNEazhQR3o4OWZYMTlZR3Z4SWRjQUM2UFFZNFU5N1o0QUtXZkFaVnNiMjgzL3ZyWjJkbkFWeklNaGIzbmpiRENWbFpXNHVIRGg3R3pzeE12WHJ4by9KcVBIejhPZkZVK2l2NExNZGZVWGhub1N0dDNncWY1OHVWTFBINzhPSzZ1cmpxNnFuSVU5N240STFDRTc4dWhzM3ovL2ozMjl2WVkvaDVKQklDYlBuLytIRnRiVzNGOGZGejZVcW9tK3pQQXhjV0Z6RjJpYno5Ky9Jano4L1A0OXUxYm5KeWN4R2cwaXZmdjMxZnpZVGpsRTEwbWdMVzFOZW1GNnRMKy9uNjhlZk9tOUdVVW8zUmo0eEVJMXFRQzRJZmgrcWorOEh0TktnQmdhSElCY0FyVVEvM3VIeUVZQURBa3lRQTRCZkxMY1BlUEVBMmdDUkhra1dtdkpENExORW1XdXdoK2wybmYwcHdBRWJudUxLNnk3WkYwQU1wM0RyU2p2b2ZTQVRUSmRvZHhrbkZ2NUFOb3VvTmtYT2phTmUySit0MC9Ja0VBRWN0RlFDeUxXMmFOTXd4L1JKSUFJaFpiME91TklZTDVMYk4yV1lZL0lsRUFUYVp0enZqdkVVRjc4NnhkOW5WTkZVRGJSNkhNUjdJQ3AzVk9GVURFN00ycFlWTVV1S3l6OUR2QjA3UTllak51aXBMYTF6bmRDWEN0ellKbjNSUWx0YTl6MmdCbXlid3BhbXBleTlRQlROcVltamVzbEZyWE9uVUFFVGMzSVB1R0tLdHhyZE1IRVBIZlJ0U3dJZXBxVyt1MHJ3SUJYYWppQkFBV1JRQ3dSZ0N3UmdDd1JnQ3dSZ0N3UmdDd1JnQ3dSZ0N3UmdDd1JnQ3dSZ0N3UmdDd1JnQ3dSZ0N3UmdDd1JnQ3dSZ0N3UmdDd1JnQ3dSZ0N3UmdDd1JnQ3dSZ0N3UmdDd1JnQ3dSZ0N3UmdDd1JnQ3dSZ0N3UmdDd1JnQ3dSZ0N3UmdDd1JnQ3dSZ0N3UmdDd1JnQ3dSZ0N3UmdDd1JnQ3dSZ0N3UmdDd1JnQ3dSZ0N3UmdDd1JnQ3c5aGVVQ29mdVdlcWpld0FBQUFCSlJVNUVya0pnZ2c9PSIsICJzaXplcyI6ICIxOTJ4MTkyIiwgInR5cGUiOiAiaW1hZ2UvcG5nIiwgInB1cnBvc2UiOiAiYW55In0sIHsic3JjIjogImRhdGE6aW1hZ2UvcG5nO2Jhc2U2NCxpVkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBZ0FBQUFJQUNBWUFBQUQwZU5UNkFBQVVnMGxFUVZSNG5PM2R6WXRXWlIvQThjc29pWHNHc2haRkVRVkI2eUtJRkNHQ2FDY1ZZUzNhdEk1d0VSUzFDVndFUVZFYit3K0NpbEI2cFdXTEZsSU5RdUhHS0tnZ294U0N3dEZVYUo2Rmo2VTVML2ZMZGM3MTh2dDg0Rms5T0o1bTV2cjl2dmU1ejR6YkpwUEpXZ0lBUXJtcTlBVUFBT01UQUFBUWtBQUFnSUFFQUFBRUpBQUFJQ0FCQUFBQkNRQUFDRWdBQUVCQUFnQUFBaElBQUJDUUFBQ0FnQVFBQUFRa0FBQWdJQUVBQUFFSkFBQUlTQUFBUUVBQ0FBQUNFZ0FBRUpBQUFJQ0FCQUFBQkNRQUFDQWdBUUFBQVFrQUFBaElBQUJBUUFJQUFBSVNBQUFRa0FBQWdJQUVBQUFFSkFBQUlDQUJBQUFCQ1FBQUNFZ0FBRUJBQWdBQUFoSUFBQkNRQUFDQWdBUUFBQVFrQUFBZ0lBRUFBQUVKQUFBSVNBQUFRRUFDQUFBQ0VnQUFFSkFBQUlDQUJBQUFCQ1FBQUNBZ0FRQUFBUWtBQUFoSUFBQkFRQUlBQUFJU0FBQVFrQUFBZ0lBRUFBQUVKQUFBSUNBQkFBQUJDUUFBQ0VnQUFFQkFBZ0FBQWhJQUFCQ1FBQUNBZ0FRQUFBUWtBQUFnSUFFQUFBRUpBQUFJU0FBQVFFQUNBQUFDRWdBQUVKQUFBSUNBQkFBQUJDUUFBQ0FnQVFBQUFRa0FBQWhJQUFCQVFBSUFBQUlTQUFBUWtBQUFnSUFFQUFBRUpBQUFJQ0FCQUFBQkNRQUFDRWdBQUVCQVY1ZStBQ0NQMWRYVlVmNmVwYVdsVWY0ZVlGamJKcFBKV3VtTEFEWTIxbUxQVFNoQTNRUUFWS0xWUlQ4cllRQjFFQUF3c2lpTGZsYkNBTVlsQUdCZ0Z2NThCQUVNU3dCQVpoYitNQVFCNUNVQVlFRVdmaG1DQUJZakFHQkdGbjZkQkFITVJnREFGQ3o5dG9nQjJKb0FnQTFZK24wUUE3QStBUUNYc1BUN0pnYmdYd0lBVWgrTGY2emw1bk1GZlJBQWhOWFNJbXR0WWZuY1F2MEVBT0hVdXB5aUxDS2ZmNmlEQUNDRTJwYU9aWE01WHg4WW53Q2dhN1VzRmd0bE5yNXVNRHdCUUpkS0x4Q0xJeTlmVDhoUEFOQ1ZVb3ZDZ2hpWHJ6TXNUZ0RRaFJJTHdUS29nNjg5ekVjQTBMU3hoNy9CWHpmZkR6QTlBVUNUeGh6MGhueWJmSS9BNWdRQVRSbHJxQnZvZmZGOUExY1NBRFRCQUNjSDMwZndMd0ZBOVlZZTJvWjFUTDZ2aUU0QVVDMERtakg0UGlNcUFVQjFoaHpJaGpHYjhiMUhKQUtBcWd3MWdBMWZadUg3a0FnRUFGVXdjS21SNzB0NkpnQW95b0NsQmI1UDZaRUFvSmdoaHFxQnlwQjh6OUlUQWNEb0RGRmE1M3VZSGdnQVJwVjdjQnFhbE9UN21aWmRWZm9DaU1Pd3BEZTV2d2RML1RQSHhPUU9BSU96K0luQTl6bXRFUUFNS3VkUU5CQnBnZTk1V3VFdEFBWmpFQkpSenU5VmJ3a3dKSGNBeU03aWh3dWNCV29tQU1ncTE4QXo3T2lKYzBHTnZBVkFOb1ljckMvWDk3UzNCTWpKSFFBV1p2SEQ5SndYYXVFT0FBc3h6R0EyN2daUUN3SEEzQ3gvbUk4SW9BYmVBbUF1T1FhUHhRL09FdVc0QThETURDeklKOGRaY0NlQWVRZ0FabUw1UTM0aWdCSzhCY0JVTEg0WWg3UEdXTndCWUVzR0VvekgzUURHSWdEWWxPVVA0eE1Cak1GYkFHeG8wUUZpOGNQaW5FT0dJZ0M0Z2xmOVVCY1J3QkM4QmNCbExIK296NkpueXRzQnJFY0FrSlhsRDhNUUFlUW1BUGlIMjR6UU54SEFwUVFBS1NYTEgycVhhM21MQUM0U0FGaitVTG5jUzFzRWtKS2ZBZ2h2a1VGZzhjUHdobHpXem5CczdnQUVadmxEYk80RXhDWUFnbkx3b1g1am5GT3pJQzRCd0Z3TURSaVdNOGJRQkVCQW5pYUd1czE3dHVaOWE4NVpqa2tBQk9OcFlxamJvc3RmQkRBdFB3VVF5TkFIM0lPQnNKaWNyL3pIdm90QWU5d0JDTUxEUkZDMzNBdmJuUUMySWdBQ0dQTkFHeDR3dTlyT1RXM1h3ekFFUU9kS0hHVERBNlkzNU8valdPUjJ2blBjUHdIQXV2ekxZekM4TVg0WmwvZjAyWWdBNkZpcHA0a1gvZnNoZ2pGL0U2Zm5BVmlQQU9oVXJnZUtSQURrVitMWGNJc0Evc3VQQVhab3FCLy84VzhIUUQ3em5LY2M1OGlQQjNLUk93Q2tsS1k3M0I0b2dueVdscFptT2xPNUZyQkZ6a1VDb0RORHY2b1FBWkRYMFBHZDYrTTV2LzBSQUIwWjY0Q0tBTWhyc3pOVjB5dDI1N2N2bmdIb1JJbjM5VXE5aHdrOXUvUmNEWDFlUEE4UW16c0FnUzE2aU1mNlVTU0lKTmVQNGM3eWR4R1RBT2hBeVZmaUJnamtOK2E1OGp4QVhBS2djVFVjeEJJUE1RRmwxVEI3V0l3QWFGaE43OSsxOGhBVGNDVy9KQ2dtQVJETWtNdDR2WTl0K1VNYm5OVjRCRUNqYW4wQzN4Q0JkbmtlSUJZQjBLRGFEOXlZVHpFRDVkVStrMWlmQUFoaTdHVnMrVU9ibk4wNEJFQmphcjMxRC9URFd3RXhDSURPV2Y3QVBNeU8vZ21BaGloc29HWm1WRnNFUUNQYytnZkc1cTJBdmdtQVRsbitRQTVtU2I4RVFBTVVOZEFTTTZzTkFxQkRpaDNJeVV6cGt3Q29uSklHV21SMjFVOEFWTXlEZjlDK1hoYWhCd0w3SXdBNll2bERYUzR1d0Y0V29SblRGd0ZRcVY0R0JrVGxERi9nODFBdkFkQUpaUTcxV0cvcDliSUl6WnArQ0lBSzlUSW9JS0xOem0vVXN4MzF2N3QyQXFBRGloektXMTFkbldyUjliQU16WncrQ0lES3pEb2NIRVFvcjRlbFBxdFpaMC9FejFIdEJBREFBdVpaYkpZaE5SQUFGZkhxSDlxeXlDTHZJUUxjQldpYkFBQ1l3NkxMVE1CVG1nQ29oRmYvMEE3TC8xL3VBclJMQUFETXdQS25Gd0tnQWw3OVF4c3MvL1c1QzlDbXEwdGZBRUR0TEg1NjVBNUFZVjc5UTkwcy8rbTRDOUFlQVFDd0FjdWZuZ21BZ3J6NmgzcFovck56RjZBdEFnRGdQeXgvSWhBQWpUQlFZQnlXLzJLaS8vZTNSQUFVNHRZWDFNZnlINTlaV0k0QUFFaVdQL0ZzbTB3bWE2VXZJaG9QLzBFOUxQNWhtSFAxY3djQUNNdnlKeklCVURrREJvWmgrUS9MNTZkK0FtQmtIbmlCOGl6LytwaU40eE1BUUNpV1Axd2dBRWJrb1Jnb3kvSWZsOThNV0RjQkFJUmcrY1BsQkVDbERCdkl4L0l2eCtldVhsZVh2b0FvM05xQzhWbjg3VmxkWGZWNUg0azdBRUNYTEgvWW5BQ29rTUVEaTdIODYrTHpXU2NCTUFLMy8yRThsbi83ek14eENBQ2dHNVkvVEU4QVZNWUFndmxZL25YeithMlBBQmlZVzFrd1BNdS9QMmJuOEFRQTBEVExIK2JqOXdCVXhDQ0M2Vm44N1ZsYVd2TEt2aUx1QUFETnNmeGhjUUpnUUVvWDhyUDg0ekJEaHlVQUttRW93ZFlzLy9iNUd0UkRBQUJOc1B3aEx3RUFWTS95aC93RXdFQzhkd1Y1V1A2eG1hWERFUUFWTUtCZ2ZaWi9uM3hkNnVEM0FBQlZXbVQ1V3pDd05RRUFWTVdyZmhpSHR3QUc0RDBybUkvbHozck0xR0VJZ01JTUxMakE4by9GMTZzOEFRQVVaL25EK0FRQVVKVGxEMlVJZ015OFZ3WFRzL3labHRtYW53QW95UEFpTXNzZlg4T3lCQUF3T3NzZnl2TjdBSURSV1B4UUQzY0FnRkZZL2xBWEFRQU16dktIK2dpQWpHWVpjZ1lhVVZqK2JHYVdyNitmQk1oTEFBQ0RzZnloWGdJQUdJVGxEM1VUQUVCMmxqL1VUd0FBV1ZuKzBBYS9Cd0RJd3VLSHRyZ0RrSW1uVTRuTThtY3NabTArQXFBQXc0NmVXUDRzeXZkQUdRSUFtSnZsRCswU0FNQmNMSDlvbXdBQVptYjVRL3NFQURBVHl4LzZJQUNBcVZuKzBBKy9Cd0RZa3NVUC9YRUhBTmlVNVE5OUVnREFoaXgvNkpjQXlHQ1dJV2tnMGdyTG56SE44djNpdHdIbUlRQ0FLMWorMEQ4UEFVSXdHeTMzaTB2YjhvY1lCQUFFc2RWaXozRmIxZktIZGdnQTZOeFk3NWRhL3RBV0FRQWRHMlA1Vy96UUpnOEJRcWNzZjJBekFnQ1lpK1VQYlJNQTBLR2hYLzFiL3RBK0FRRE14UEtIUGdnQTZNeVFyLzR0ZitpSEFBQ21ZdmxEWHdRQUFBUWtBQUFnSUFFQUFBRUpBQUFJU0FCQVo0WjRXTThEZ05BZkFRQUFBUWtBNkZET1YreGUvVU9mQkFBQUJDUUFvRk01WHJsNzlRLzlFZ0RRc1VVV3VPVVBmYnU2OUFVQXc3cTR5S2Y5TndJc2ZvaEJBRUFRVzRXQXhRK3hDQUFJeHFJSFV2SU1BQUNFSkFBeW1PVVYxWkQvVmp0QXEyYVpqZTVpNVNFQUFDQWdBUUFBQVFrQUFBaElBQUJBUUFJQUFBSVNBQUFRa0FBQWdJQUVBQUFFSkFBSzhNdUFBUDVsSnBZaEFETHhtNmtBaG1mVzVpTUFBQ0FnQVFBQUFmbm5nS0VCcjc3NmFucm1tV2NHLzN2T25UdVh6cDA3bDFaWFY5UEpreWZUaVJNbjBrOC8vWlNPSFR1V2poNDltbFpXVnRMcDA2Y0h2dzVnZUFJQStNZjI3ZHZUOXUzYjAvTHljcnJwcHB1dStQL1Bueitmamh3NWtqNzg4TU4wNk5DaGRQejQ4UUpYQ2VUZ0xRQmdhdGRjYzAzYXVYTm5ldVdWVjlLeFk4ZlNPKys4ays2Nzc3N1Nsd1hNUVFCa05NdlRxWDdzaGRaZGRkVlY2ZUdISDA2ZmZmWlpldXV0dDlLdHQ5NWErcEpvMEN5ejBFOEE1Q1VBZ0lVOTl0aGo2YXV2dmtxUFBQSkk2VXNCcGlRQWdDeXV1KzY2OVBiYmI2Zm5uMysrOUtVQVV4QUFRRmI3OSs5UEw3NzRZdW5MQUxZZ0FJRHNYbnJwcGZURUUwK1V2Z3hnRXdLZ0lBOEMwck1EQnc1NE1KQk5tWUZsQ1lETVBLVUtGeXd2TDZmWFgzKzk5R1hRQ2JNMVB3RUFER2JQbmozcDdydnZMbjBad0RvRUFIVHU0TUdEYVdscGFkUC8zWERERGVtT08rNUlEenp3UUhyaGhSZlM0Y09Icy8zOSsvYnR5L2F4Z0h3RVFHSGVBNk1HWjgrZVRiLzk5bHRhV1ZsSmI3NzVabnJvb1lmU2d3OCttTDcvL3Z1RlAvYWVQWHZTWkRMSmNKWDB4T3dyVHdBTXdIdFY5T0NMTDc1SXUzZnZUaXNyS3d0OW5PWGw1WFQvL2ZkbnVpb2lNbE9ISVFDQURaMDZkU285L3ZqajZmZmZmMS9vNCt6ZXZUdlRGUUc1Q0FCZ1V5ZFBubHo0YWY2Nzdyb3IwOVVBdVFpQUNuZ3ZqTnE5Kys2N0MvMzUyMisvUGRPVjBBTXpydzRDWUNEZXM2SW52Lzc2YS9ydXUrL20vdk8zM0hKTHhxc2hFck4wT0FJQW1Ncng0OGZuL3JPVHlTUnQyN1l0NDlVQWl4SUF3RlQrK09PUGhmNzh0ZGRlbStsS2dCd0VRQ1c4SjBidGR1ellNZmVmWFZ0YlMzLzk5VmUraTZGWlpsMDlCTUNBdkhkRlR4WjVILy9NbVROcGJXMHQ0OVVRZ1JrNkxBRUFiT25tbTI5T2Q5NTU1OXgvL3BkZmZzbDROVUFPQXFBaWJvMVJxeWVmZkhLaFAvL2pqei9tdVJDYVpzYlZSUUFBbTdyeHhodlRzODgrdTlESCtPYWJiekpkRFpDTEFCaVk5N0JvMmZMeWNqcDA2RkM2L3ZyckYvbzRPZjkxUVdJd080Y25BQ3JqRmhtMTJMVnJWenA4K0hDNjU1NTdGdm80cDA2ZFNwOS8vbm1tcTZKVlpsdDlyaTU5QVVCNTI3ZHZUenQyN0VpMzNYWmIycmx6WjNyMDBVZlRybDI3c256c1R6NzVKSjArZlRyTHh3THlFUUFqV0ZwYVVyOFVzM2Z2M3JSMzc5NWlmLytCQXdlSy9kMjB5ZTMvY1hnTG9FSmlnVjU4L1BISDZldXZ2eTU5R1JSbXB0VkpBQUNET0hYcVZIcnV1ZWRLWHdhd0FRRXdFcmUwaUdiZnZuM3A1NTkvTG4wWk5NYXNISThBcUpSYlpyVHM1WmRmVHUrOTkxN3B5NkFDWmxtOVBBUUlaTFYvLy83MDJtdXZsYjRNWUFzQ1lFU3ovalRBNnVxcTIyRTA0ODgvLzB4UFAvMTArdUNERDBwZkNwV1k5ZFcvZVRjdWJ3RUFDM3YvL2ZmVHZmZmVhL2xEUTl3QkdKbmZDVUF2L3Y3NzcvVHBwNSttTjk1NEkzMzU1WmVsTDRmR2VmVS9QZ0ZRT1c4RFVKUHo1OCtuSTBlT3BJOCsraWdkT25USVUvNXN5QXVkK2drQTRCL256NTlQWjgrZVRXZk9uRWtuVDU1TUowNmNTRC84OEVQNjl0dHYwOUdqUjlQS3lvckJEcDBRQUFWNEdKQXhIVHg0TUQzMTFGT2xMNE5BUFB6WEJnOEJBa0JBQXFBUXhRdGdGcFlrQUJyaGZWZWdCV1pWT3dRQUFBUWtBQXFhOWRhWHNnWnE1dUcvdGdnQUFBaElBQlRtTGdEUUE2LysyeU1BQUNBZ0FWQUJkd0dBbG5uMTN5WUJBQUFCQ1lCS3VBc0F0TWlyLzNZSkFBQUlTQUJVeEYwQW9DVmUvYmROQUFCQVFBS2dNdTRDQUMzdzZyOTlBcUFESWdBWWs1blRCd0ZRSWFVTTlNUk1xNU1BNklRaUI4WmcxdlJEQUZSS01RTTlNTXZxdFcweW1heVZ2Z2pXTjA5cE8yekFVTXlrdnJnRFVMRjVEbzdiYzhBUUxQLytDSURLT1VCQWk4eXUrZ21BRHJrTEFPUmtwdlJKQURSQVNRTXRNYlBhSUFBNnBkaUJITXlTZmdtQVJuZ2dFQmliQi8vNkpnQWE0bUFCTlRPajJpSUFPdWN1QURBUHM2Ti9BcUF4M2dvQWh1Yldmd3dDSUFnUkFFekRySWhEQURSSWFRTTFNWlBhSkFBYVZmdGJBVjVGUUI2MW4xdkx2MTBDSUpneGhzbkZ2ME1Fd0dMR1BFdk9hendDb0dIemx2ZVFCLzIvSDl0UWdmbU1lWmJtL2RoZS9iZE5BRFN1cGdPNDBSQVJBVENiRnM1U1RiT0grUWlBRHRUd1BNQldINittd1FVMUcvc3NlZDgvTGdFUVdLNUJNdTNIRVFHd3ViSFBrak1abXdEb1JLbm5BV2I5OHdZT3JHL3NzK1I5ZndSQVI4WSttUE1PRUJFQWwydmxMRm4rZlJFQW5SbnJlWUJTcno2Z055WE9rdmY5U1VrQThIK3pESVFjeTlzd2dRdHluSVd4enk5OUVBQWRHdko1QU1zZjhoc3JBcnp2ejZVRVFLZUdpQURMSDRZemRBUlkvdnlYQU9oWXpnaXcvR0Y0UTBXQTVjOTZCQURydW5SZ1dQNHdudHdSNEQxL05ySnRNcG1zbGI0SWhsVjZBRmorTUR2bmxxRzVBeEJBeVlOc2lNQjhuRnVHSmdDQ0tIR2dEUkZZakhQTGtBUkFJR01lYkVNRThuQnVHWW9BQ0dhTUEyNklRRjdPTFVNUUFBRU5lZEFORVJpR2MwdHVBb0JzREJFWWxqTkdUZ0lncU55RHhHQ0NjVGk3NUNJQUFzdDE4QTBRR0plelN3NENJTGhGQjRBQkFtVTR1eXhLQUREM0lEQkFvQ3hubDBVSUFGSktzdzhFQXdUcTRPd3lMd0hBUDZZZERBWUkxTVhaWlI0Q2dNdHNOU0FNRUtpVHM4dXNCQUJYMkdoUUdDQlFOMmVYV1FnQTF2WGZnV0dBUUJ1Y1hhWWxBTmpReGNGaGdFQmJuRjJtc1cweW1heVZ2Z2dBWUZ6dUFBQkFRQUlBQUFJU0FBQVFrQUFBZ0lBRUFBQUVKQUFBSUNBQkFBQUJDUUFBQ0VnQUFFQkFBZ0FBQWhJQUFCQ1FBQUNBZ0FRQUFBUWtBQUFnSUFFQUFBRUpBQUFJU0FBQVFFQUNBQUFDRWdBQUVKQUFBSUNBQkFBQUJDUUFBQ0FnQVFBQUFRa0FBQWhJQUFCQVFBSUFBQUlTQUFBUWtBQUFnSUFFQUFBRUpBQUFJQ0FCQUFBQkNRQUFDRWdBQUVCQUFnQUFBaElBQUJDUUFBQ0FnQVFBQUFRa0FBQWdJQUVBQUFFSkFBQUlTQUFBUUVBQ0FBQUNFZ0FBRUpBQUFJQ0FCQUFBQkNRQUFDQWdBUUFBQVFrQUFBaElBQUJBUUFJQUFBSVNBQUFRa0FBQWdJQUVBQUFFSkFBQUlDQUJBQUFCQ1FBQUNFZ0FBRUJBQWdBQUFoSUFBQkNRQUFDQWdBUUFBQVFrQUFBZ0lBRUFBQUVKQUFBSVNBQUFRRUFDQUFBQ0VnQUFFSkFBQUlDQUJBQUFCQ1FBQUNBZ0FRQUFBUWtBQUFoSUFBQkFRQUlBQUFJU0FBQVFrQUFBZ0lBRUFBQUVKQUFBSUNBQkFBQUJDUUFBQ0VnQUFFQkFBZ0FBQWhJQUFCQ1FBQUNBZ0FRQUFBUWtBQUFnSUFFQUFBRUpBQUFJU0FBQVFFQUNBQUFDRWdBQUVKQUFBSUNBQkFBQUJDUUFBQ0FnQVFBQUFRa0FBQWhJQUFCQVFBSUFBQUlTQUFBUWtBQUFnSUFFQUFBRUpBQUFJQ0FCQUFBQkNRQUFDRWdBQUVCQUFnQUFBaElBQUJDUUFBQ0FnQVFBQUFRa0FBQWdJQUVBQUFFSkFBQUlTQUFBUUVBQ0FBQUNFZ0FBRUpBQUFJQ0FCQUFBQkNRQUFDQWdBUUFBQVFrQUFBaElBQUJBUUFJQUFBSVNBQUFRa0FBQWdJQUVBQUFFSkFBQUlDQUJBQUFCL1E5M3k1RythVWhxWkFBQUFBQkpSVTVFcmtKZ2dnPT0iLCAic2l6ZXMiOiAiNTEyeDUxMiIsICJ0eXBlIjogImltYWdlL3BuZyIsICJwdXJwb3NlIjogImFueSJ9LCB7InNyYyI6ICJkYXRhOmltYWdlL3BuZztiYXNlNjQsaVZCT1J3MEtHZ29BQUFBTlNVaEVVZ0FBQWdBQUFBSUFDQVlBQUFEMGVOVDZBQUFUdDBsRVFWUjRuTzNkellzY1ZkdkE0Wk9nUVhvR2pDNFVSUlFFMTRvZ0pnUkVFSGRCUmFJTE42NUZzaEFVM1FoWkNJS2ltL2dmQ0NxUzRDY3VYYmdJNmhCUXNva29xR0JFRXhDVVRHSVNjSjdGWTJJbTZlbnU2anIxY2M1OVhmRENDKzg3azNKU2RkKy9xdTZlYkp0TUpoc0pBQWhsKzlBSEFBRDBUd0FBUUVBQ0FBQUNFZ0FBRUpBQUFJQ0FCQUFBQkNRQUFDQWdBUUFBQVFrQUFBaElBQUJBUUFJQUFBSVNBQUFRa0FBQWdJQUVBQUFFSkFBQUlDQUJBQUFCQ1FBQUNFZ0FBRUJBQWdBQUFoSUFBQkNRQUFDQWdBUUFBQVFrQUFBZ0lBRUFBQUVKQUFBSVNBQUFRRUFDQUFBQ0VnQUFFSkFBQUlDQUJBQUFCQ1FBQUNBZ0FRQUFBUWtBQUFoSUFBQkFRQUlBQUFJU0FBQVFrQUFBZ0lBRUFBQUVKQUFBSUNBQkFBQUJDUUFBQ0VnQUFFQkFBZ0FBQWhJQUFCQ1FBQUNBZ0FRQUFBUWtBQUFnSUFFQUFBRUpBQUFJU0FBQVFFQUNBQUFDRWdBQUVKQUFBSUNBQkFBQUJDUUFBQ0FnQVFBQUFRa0FBQWhJQUFCQVFBSUFBQUlTQUFBUWtBQUFnSUFFQUFBRUpBQUFJQ0FCQUFBQkNRQUFDRWdBQUVCQUFnQUFBaElBQUJDUUFBQ0FnQVFBQUFRa0FBQWdJQUVBQUFFSkFBQUlTQUFBUUVBQ0FBQUNFZ0FBRUpBQUFJQ0FCQUFBQkNRQUFDQWdBUUFBQVFrQUFBaElBQUJBUUFJQUFBSVNBQUFRa0FBQWdJQUVBQUFFSkFBQUlDQUJBQUFCQ1FBQUNFZ0FBRUJBQWdBQUFycG02QU1BOGxsZlgrLzArNitzckhUNi9ZSCtiSnRNSmh0REh3UXdYOWZMUFJlUkFHVVFBREFpcFN6NVpZa0RHQThCQUFPcGZka3ZTaFRBTUFRQTlNVENYNHdnZ0g0SUFPaUloWitISUlCdUNBREl5Tkx2bGhpQWZBUUF0R1RwRDBNTVFEc0NBSlpnNlkrTEdJRG1CQUFzeU5Jdmd4aUF4UWdBbU1IU0w1c1lnSzBKQUppaTFNWGY5Y0x6YzRGNkNBRDQxOWlYV3lsTHpNOFJ5aUFBQ0c5c0M2dldCZVhuRE9NaUFBaHJMQXNwNmlMeTg0ZGhDUURDR1hMeFdEYXorYnVCL2dnQXdoaHF1VmdzeS9IM0JkMFNBRlN2NzBWaWdYVEQzeVBrSlFDb1ZwOEx3N0xvbDc5YmFFOEFVSjIrbG9QRk1BNyt2bUU1QW9CcVdBU3grZnVIWmdRQVZlaDYrQnY2WlhFK3dId0NnS0laOU16aS9JQ3RDUUNLMU9WZ045VHI1SnlCelFRQXhlbHFrQnZpTVRoLzRQOEVBTVV3dU1uSitVUjBBb0FpZERHc0RXcFNjbTRSbHdCZzFBeG4rdUpjSXhvQndHamxIc2lHTVl0dzNoSEY5cUVQQUtZeGhCbEs3bk5sTFAvc01WekpFd0JHeGVKblRKeVAxRXdBTUJvNWg2MUJTMDdPVFdva0FCaUZYQVBXY0tWTHpsTnFJZ0FZbERzclN1T2NwUllDZ01HNG02Smt6bDlLNTFNQURNTHdwSFM1emoyZkVtQW9uZ0RRdXh3RHorSm5USnpUbEVnQTBCdDMvZFRNK1UxcHZBUkFMd3hIYXVjbEFVcmpDUUNkODNpVWFKenpsRUFBMENtRGtLZzg5V0xzdkFSQVp5eC9Jdk9TQUdQbkNRRFpXZnl3bVd1Q01SSUFaR1hRd1hSZUVtQnN2QVJBTnBZL2JNMUxBb3lOQUNBTHl4L215M0dPdTA3SVJRRFFtdVVQaTJ0N3Juc0NRQzdlQTBBcmJZZVJ4VTgwM2d2QVdIZ0N3TklzZjJnbTU5MjdKd0cwSlFCWWl1VVB6WFN4c0VVQWJRZ0FHak4wb0prdXJ4blhJOHNTQUF6QzBDS0tQczUxMXhQTEVBQTA0alZNV0Z5ZjU3anJpYVlFQUF2ekdpWXNib2h6Mi9WRUV3S0F3UmxhMUtiTk9iMnlzdUpOc3ZSQ0FMQ1FycGUwQ0tBV2JaZi90UCs5cnorZldBUUFjL1UxVUF3dUlwdTI4RVVBWFJJQXpOVDNJREc0S05teTUrK3NSUzhDNklvQVlFdEREUkNEaXhKMXNmeWIvUDlNNDFwaUZnRkFkam5ld0dSd1VaSXVsejkwUlFBd1ZkdUJKZ0tJb3EvbDd5a0F1UWtBcnBKcm9Ja0FhdGYzbmI4SUlDY0J3Q2E1QjVvSW9HWkRQTUlYQWVRaUFHaHQza0FTQWRTczZTL3V5WEU5ZU84QU9RZ0FMbGxteVM0NmlFUUF0ZXZ5M2Z5NXZwZHJpTXNKQUZKSy9ReUd0c1BQWFE5ajE4WG4rWE1UQVZ5MGJUS1piQXg5RUF5cjd6Y3lkZm1rQWNiaTh2Tzh5L1BYUnhCWmxpY0FMS1hOOE9qcjQwOHdwSndmaVYza3o0R21QQUVJYnNpNzhVWCtiTU1ORnVQSkdrMTVBaERZMEs4Rjl2SHBBV0JyUTg4QWhpVUFhQ1QzVXU3eTl3ZEFKSzRabWhJQVFZM3BjV0VYdjBFUUl2TFJRSm9RQUFHTmFmbGYrZjB0ZjJoSEJMQW9BY0JvV1A0QS9SRUF3WXp4N2gvSXkxTUFGaUVBbU1ueWh6SzVkcGxIQUFTaThJRlp6SWhZQkVBUUh2MURQRjRLWUJZQndGU1dQOVRCdGN4V0JFQUFpaDVvd3N5SVFRQndGWGNNVUJmWE5OTUlnTW9wZVdBWlprZjlCQUNidUZPQXpXcFpoSzV0cmlRQUtsYkw0SUtoWEx5R29sNUxVZis3b3hBQVhPSU9BZjVUNC9KempYTTVBVkNwcHNQTFlJRC9UTHQrYWdtQ3B0ZDZMZi9kWEUwQUFQeHJmWDE5NXNLekRLbUpBS2lRdTM5b2J0SHJwb1lJOEJTQWxBUUFnQVZIU0FLZ011NytvWmxsbG44TndlQXBBQUlBQ0t2TlVyTVFLWjBBcUlpN2YxaGMyd1Zldy9YaktVQnNBZ0FJeC9JSEFWQU5kLyt3R010L00wOEI0cnBtNkFNQTZJUEZENXQ1QWhDUVFVWTBsdjlzdGYvM01aMEFxSUJIY3JBMXl6OC9NNmNPQWdDb2x1VVBXeE1BaGZQbVA1ak84bS9HbXdIakVRQkFkU3gvbUU4QUJHS29FWUhsdjd6SS8rMFJDWUNDZVFRSC81bjNUL2t1d2dKc3hnd3FtOThEQUJUUDRvZm1QQUVJd29DalZwWi9YbjRlY1FpQVFubjBCcGIvR0poRjVSSUFBUmh5MU1qeTc0NmZUUXdDQUNpTzVRL3RDWUFDZWVSR1pKYi8rSmhKWlJJQWxUUHNxSW5sM3g4L3EvcjVHQ0F3ZWhZLzVPY0pRR0U4YWlNYXk3OE1abE41QkVERkRENUtaL2tQeTgrdmJnSUFHQ1hMSDdvbEFBcmlFUnRSV1A1bE1xUEtJZ0NBVWJIOG9SOENvRktHSUNXeS9NZkh6N1JlUGdZSURDN0hvMk9MQ3ByeEJLQVFYbHVqVmpudStpMy84VENyeWlFQUttUVlVZ3FQL012ZzUxd25BUUFNd3ZLSFlRa0FvSGVXUHd4UEFCVEFhMnJVeFBLdm41bFZCZ0VBOU1ieWgvRVFBSlV4SUJtajlmVjF5Nzl3ZnY3MThYc0FnRTVaL0RCT25nQUFuYkg4WWJ3RXdNaDVNdzJsc3Z4ak03dkdUd0JVeE1Ca0xDei9Pdmw3cVlzQUFMS3kvS0VNQWdESXh2S0hjZ2dBSUF2TEg4cmlZNEJBS3hZL2xNa1RBR0JwbGorVVN3Q01XSlBoYXBEU044cy9waVovYno0S09HNENBR2pNOG9meUNRQ2dFY3NmNmlBQWdJVlovbEFQQVFBc3hQS0h1dmdZSURCVGpqZHlXZjR3UGdJQTJKSzdmcWlYbHdDQXFTeC9xSnNBQUs1aStVUDlCTUJJK1NWQURNWHlaeDYvREtnTzNnTUF3V3cxa0ZkV1ZpeC9DRVFBUUJEemxydmxEN0VJQUtoY0g0OWdMWDhvandDQWluVzkvQzErS0pjM0FVS2xMSDlnRmdFQU5HYjVRL2tFQUZTb3k3dC95eC9xSUFDQWhWbitVQThCQUpYcDZ1N2Y4b2U2Q0FBQUNFZ0FBRUJBQWdBQUFoSUFBQkNRQUFDQWdBUUFWS2FMZCt2N0JBRFVSd0FBUUVBQ0FDcVU4NDdkM1QvVVNRQUFRRUFDQUNxVjQ4N2QzVC9VU3dCQXhkb3NjTXNmNm5iTjBBY0FkT3ZpSWwvMDN3aXcrQ0VHQVFCQnpBc0JpeDlpRVFBUWpFVVBwT1E5QUtQVlpFaDM5YysvQWt6VFpPWUl6dkVTQUFBUWtBQUFnSUFFQUFBRUpBQUFJQ0FCQUFBQkNRQUFDTWp2QVlBQ3ZQYmFhK25aWjUvdC9NODVmLzU4T24vK2ZGcGZYMCtuVHAxS0owK2VURC8vL0hNNmZ2eDRPbmJzV0ZwYlcwdG56cHpwL0RpQTdna0E0SklkTzNha0hUdDJwTlhWMVhUenpUZGY5WCsvY09GQ09ucjBhUHJvbzQvUzRjT0gwNGtUSndZNFNpQUhMd0dNbUY4R3hOaGNlKzIxYWRldVhlblZWMTlOeDQ4ZlQrKysrMjY2Ly83N2h6NHNldVNYQU5WREFBQkwyYjU5ZTNya2tVZlM1NTkvbnQ1KysrMTAyMjIzRFgxSVFBTUNBR2p0OGNjZlQxOS8vWFY2OU5GSGh6NFVZRUVDQU1qaSt1dXZUKys4ODA1NjRZVVhoajRVWUFFQ0FNanF3SUVENmFXWFhocjZNSUE1QkFDUTNjc3Z2NXllZlBMSm9ROERtRUVBVk1RbkFSaVRnd2NQZW1OZ1pjeVl1Z2lBa2ZNeEdrcTF1cnFhM25qamphRVBnNEdZWGVNbkFJRE83TjI3Tjkxenp6MURId1l3aFFDQXloMDZkQ2l0ckt6TS9KOGJiN3d4M1hubm5lbkJCeDlNTDc3NFlqcHk1RWkyUDMvLy92M1p2aGVRandDb2pOZm9XTWE1YytmUzc3Ly9udGJXMXRKYmI3MlZIbjc0NGZUUVF3K2xIMzc0b2ZYMzNydDNiNXBNSmhtT2tpR1pMZlVSQU1CVVgzNzVaZHF6WjA5YVcxdHI5WDFXVjFmVEF3ODhrT21vZ0Z3RVFBRzhtWWFobkQ1OU9qM3h4QlBwanovK2FQVjk5dXpaayttSUtJR1pWUVlCQU14MDZ0U3AxdS9tdi92dXV6TWREWkNMQUFEbWV1Kzk5MXA5L1IxMzNKSHBTSUJjQkVDRnZGbUgzSDc3N2JmMC9mZmZMLzMxdDk1NmE4YWpvVzltU3AwRVFDRzhwc2JRVHB3NHNmVFhUaWFUdEczYnRveEh3MWlaVmVVUUFNQkMvdnp6ejFaZmY5MTExMlU2RWlBSEFWQXBqK3pJYmVmT25VdC83Y2JHUnZyNzc3L3pIUXk5TVV2cUpRQ0FoYlI1SGYvczJiTnBZMk1qNDlFQWJRbUFnbmh0amFIY2Nzc3Q2YTY3N2xyNjYzLzk5ZGVNUjhOWW1WRmxFUURBWEU4OTlWU3JyLy9wcDUveUhBaVFqUUNvbU5mdXlPR21tMjVLenozM1hLdnY4ZTIzMzJZNkd2cGtodFJOQUJUR0l6YjZ0THE2bWc0ZlBweHV1T0dHVnQ4bjU3OHV5RGlaVGVVUkFNQlV1M2Z2VGtlT0hFbjMzbnR2cSs5eit2VHA5TVVYWDJRNktpQ1hhNFkrQUxxMXZyNnV6SmxyeDQ0ZGFlZk9uZW4yMjI5UHUzYnRTbzg5OWxqYXZYdDNsdS85NmFlZnBqTm56bVQ1WHZUSDQvLzZDWUFDcmF5c3VEaFoyTDU5KzlLK2Zmc0crL01QSGp3NDJKOU5QOXhrbE1sTEFFQm5Qdm5ray9UTk45OE1mUmpBRkFJZ0FFOExHTUxwMDZmVDg4OC9QL1Joc0FRekl3WUJVQ2lQM0JpNy9mdjNwMTkrK1dYb3c2QmpabEc1QkVBUWlwNCt2ZkxLSytuOTk5OGYrakJZZ2xrUmh6Y0JBbGtkT0hBZ3ZmNzY2ME1mQmpDSEFDaVlUd013Sm4vOTlWZDY1cGxuMG9jZmZqajBvZEFUai8vTDVpV0FRTVFDWGZuZ2d3L1NmZmZkWi9rWHpveUl4Uk1BWUNuLy9QTlArdXl6ejlLYmI3Nlp2dnJxcTZFUEIyaElBQlN1NmNzQWZqTWdiVnk0Y0NFZFBYbzBmZnp4eCtudzRjUGU1VitScG5mLzVrajVCQUJ3eVlVTEY5SzVjK2ZTMmJObjA2bFRwOUxKa3lmVGp6LyttTDc3N3J0MDdOaXh0TGEyNWpFeFZFSUFWTUNiQVpubDBLRkQ2ZW1ubng3Nk1LaUl1Lzg2ZUJOZ1FHSUJ1SnlaRUpNQUFJQ0FCRUFsbWo2U1UveEFTdDc4RjVrQUFJQ0FCRUJGUEFVQW1uRDNINXNBQUlDQUJFQmxQQVVBRnVIdUh3RUFBQUVKZ0FwNUNnRE00dTZmbEFRQUFJUWtBQ3JsS1FBd2pidC9MaElBWENJQ29HNnVjUzRuQUNxbTNJRTJ6SkM2Q1FBMmNZY0FkWEp0Y3lVQlVEa0ZEeXpEN0tpZkFPQXE3aFNnTHE1cHBoRUFBU2g1b0Frekl3WUJ3RlR1R0tBT3JtVzJJZ0NDV0tib0RRNG8yekxYc0x2L09MWk5KcE9Ob1ErQy92Z2xJQkNINjUxWlBBRmdKazhCb0V5dVhlWVJBTUY0S1FEcTU5RS9peEFBQUJDUUFBaG83RThCUEhHZ05tTy9mdHo5eHlRQWdocHJCRno4TTBRQXRlanpuTGI4YVVJQTBFaVhRK3pLN3kwQ0tGMmY1N1RyaGFZRVFHQmpLdit0aHBlaFJxbEtPS2ZITkFQb253QUliZ3d2QmN6N2ZtTWFtTENJdnM5cGovNVpoZ0JnS2JrRzJLTGZSd1JRaXI3UGFkY0d5eElBTEgwbjBIYndOUDE2ZzQ2eDYvdWNYdmJyM2YyVGtnRGdYMzBQaEdVSGx3aGdyRW81cHkxL0xoSUFYTkxYK3dHR3V1dUJyZ3h4VG52ZG43WUVBSzAxR1VRNWxyY2h4dGprT0NmN3ZvNUFBTEJKbCs4SHNQeXBXVjhSNEhWL2NoRUFYS1dMQ0xEOGlhRHJDTEQ4eVVrQU1GWE9DTEQ4aWFTckNMRDh5VTBBMENuTG40ajZmazhBTEVNQXNLVzJUd0VzZnlMTEdRSHUvdW5DdHNsa3NqSDBRVEJ1UTkySkdGN1V3UFhEV0hrQ3dGeEREQkxEaTFxNGZoZ3JBY0JDK2h3b2hoZTFjZjB3UmdLQVVURzhxSlZ6bTdFUkFDeXM2d0ZtUUZJNzF4QmpJZ0JvcEtzQlkzQVJoV3VJc1JBQU5KWjcwQmhjUk9NYVlnd0VBRXZKTlhBTUxxSnlEVEUwQWNEUzJnNGVnNHZvWEVNTVNRRFF5cklEeU9DQy8zTU5NUlFCUUd0TkI1SEJCWnU1aGhpQ0FDQ0xSUWVTd1FYVHVZYm9td0FnbTNtRHllQ0MyVnhEOUVrQWtOVldBOHJnZ3NXNGh1aUxBQ0M3S3dlVndRWE51SWJvZ3dDZ0V4Y0hsc0VGeTNFTjBiVnRrOGxrWStpREFBRDY1UWtBQUFRa0FBQWdJQUVBQUFFSkFBQUlTQUFBUUVBQ0FBQUNFZ0FBRUpBQUFJQ0FCQUFBQkNRQUFDQWdBUUFBQVFrQUFBaElBQUJBUUFJQUFBSVNBQUFRa0FBQWdJQUVBQUFFSkFBQUlDQUJBQUFCQ1FBQUNFZ0FBRUJBQWdBQUFoSUFBQkNRQUFDQWdBUUFBQVFrQUFBZ0lBRUFBQUVKQUFBSVNBQUFRRUFDQUFBQ0VnQUFFSkFBQUlDQUJBQUFCQ1FBQUNBZ0FRQUFBUWtBQUFoSUFBQkFRQUlBQUFJU0FBQVFrQUFBZ0lBRUFBQUVKQUFBSUNBQkFBQUJDUUFBQ0VnQUFFQkFBZ0FBQWhJQUFCQ1FBQUNBZ0FRQUFBUWtBQUFnSUFFQUFBRUpBQUFJU0FBQVFFQUNBQUFDRWdBQUVKQUFBSUNBQkFBQUJDUUFBQ0FnQVFBQUFRa0FBQWhJQUFCQVFBSUFBQUlTQUFBUWtBQUFnSUFFQUFBRUpBQUFJQ0FCQUFBQkNRQUFDRWdBQUVCQUFnQUFBaElBQUJDUUFBQ0FnQVFBQUFRa0FBQWdJQUVBQUFFSkFBQUlTQUFBUUVBQ0FBQUNFZ0FBRUpBQUFJQ0FCQUFBQkNRQUFDQWdBUUFBQVFrQUFBaElBQUJBUUFJQUFBSVNBQUFRa0FBQWdJQUVBQUFFSkFBQUlDQUJBQUFCQ1FBQUNFZ0FBRUJBQWdBQUFoSUFBQkNRQUFDQWdBUUFBQVFrQUFBZ0lBRUFBQUVKQUFBSVNBQUFRRUFDQUFBQ0VnQUFFSkFBQUlDQUJBQUFCQ1FBQUNBZ0FRQUFBUWtBQUFoSUFBQkFRQUlBQUFJU0FBQVFrQUFBZ0lBRUFBQUVKQUFBSUNBQkFBQUJDUUFBQ0VnQUFFQkFBZ0FBQWhJQUFCQ1FBQUNBZ0FRQUFBUWtBQUFnSUFFQUFBRUpBQUFJU0FBQVFFQUNBQUFDRWdBQUVKQUFBSUNBQkFBQUJDUUFBQ0FnQVFBQUFRa0FBQWhJQUFCQVFBSUFBQUlTQUFBUWtBQUFnSUFFQUFBRUpBQUFJQ0FCQUFBQkNRQUFDRWdBQUVCQUFnQUFBaElBQUJDUUFBQ0FnQVFBQUFRa0FBQWdJQUVBQUFFSkFBQUlTQUFBUUVBQ0FBQUNFZ0FBRUpBQUFJQ0EvZ2RPY1FZZ2phVHdSQUFBQUFCSlJVNUVya0pnZ2c9PSIsICJzaXplcyI6ICI1MTJ4NTEyIiwgInR5cGUiOiAiaW1hZ2UvcG5nIiwgInB1cnBvc2UiOiAibWFza2FibGUifV19" />
+<meta name="theme-color" content="#0A0A0A" />
+
+<!-- Íconos embebidos como base64 (sin archivos externos) -->
+<link rel="icon" type="image/png" sizes="32x32" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAA2ElEQVR4nO2WsQ3EIAxFP6dUsAL7MA5jsBjz0FHfVZEiBME25EjBL0Ps/3Cwg9Jaf7FQn5XmG+AVAIckKOdcfW6MYedSnC5oGY+AkACoxhKQLkDNvJWY8y4JoExI2REXgtwFUvOemgDXZKPmd2uPzQFqJ1QBRnd/xlxjW1UYroDkoE4DkM6HaQClJKNYDBBCAACklMTmQwCnlFJwzonjqwCU0wsA3ntYaxFjrK5Tumn5fYD8L+B+Y2rs8grcAlDPQilO5boVqI3VmTGsK9kTevcZ2AAb4B/6AVdQU6/XmmRRAAAAAElFTkSuQmCC" />
+<link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAIAAACyr5FlAAAF2ElEQVR4nO3dMU4jPRiAYW/YiqGAIgdIhRANCE5Ak1NQ0SBRcwjEBTgCFdQRHSUSCl1KGmhIgYSgDGyR/fNnJ/mGGRL7+2y/TxmhXdt54xkmYfJrdXXVAfO0tAcAu4gDIuKAiDggIg6IiAMi4oCIOCAiDoiIAyLigIg4ICIOiIgDIuKAiDggIg6IiAMi4oCIOCAiDoiIAyLigIg4ICIOiIgDIuKA6Lf2AHR8fHw0+vmiKDyNxLJfmfwhddMaqmXSSspxLDcIScKhJBhHnSaaPqM+/k370omj+vlb7jMX8v9SlEIc0lMV5knS/d+9ijgOa8+KtfEsLtY4Zp8JO8+B5bE1El8csSx9LOOsEFMcMS53jGOeiCaO0ipHtMQu2sFHEEekKzsruolYf+MtugWtUBp8mAu4izC9c0wvX9RZlMQyL6NxpLRhzBXFBC0eVqJYuAVFcYgxt3PEsuUui+X52to5LK+UJ9PTtLZ/GIojwzLcTBCm+rASB2VUP6jCRByWXz3BGDy+6Mdh/NXjz+xmaa0P5TgqjiYWVscfaeKm+tDfOcZmXzrOwOp4EsunDDXjmKyR9NJxKfZR5xLf5EHd6avFUTHttPuoeCXMpTh9nTi+/cW16QrGZe4xdO7PjGn1oXzOUbFAdVYwXnXmpT53hfdW5p5qQKK4XKF3jsROIEIKv3RqhxW2jZoUFypoHBxQfkbrN1srF8FyEN0hNVwcmW8b4+n/uA+VzSNQHNG9aJZrevqLL0WwxQx9WMlw21jWR2LT/1U2N1F/WDrERbA8zzY8/ZVsyMVk5/Ai6r+fnvC+c2S4bfg+lARbUnaOJYv6JKOEOJYppTKc7ziyOqYEKyPYBTF2juVIbM8YI44lSLIM5zWOTI4pKmWEObKwcywk1T1jLNOv1FhcGpe5qrFz/EQOZTh/V0gTPuGwcyjxvcjsHM3YKSMA4mggqzIccdSXWxmOOGrKsAznKY7EzkbNluH7Uhg7xzfMlhEAcVTJuQzHFVJJJpe5qhHHX7Hciikk4nCuyW2GssI5B2WIiEOUeRmOOFCBOCAiju9vZ5gt4nBuJgXKGONX2b8IYhY7B0TEARFxQOQlDiM3/U8eHzCGmkzjOD4+/hC8vb09Pz/f3d1dXFx0u91WK9MlctnGUWFlZWV9fX17e/vw8PDq6ur29nZzc1N7UDqI4xu7u7u9Xq/T6WgPRIGvOFI6J2232+fn59qjKAvwKW52DuecGwwGRVEURbG2ttbpdI6OjobD4fQPdLvddrutNTwtxPGPr6+vl5eXy8vLk5OT6cdbrdbOzo7SoNQQx3z39/elRzY2NlRGoshjHFGfduzt7ZUeeX19VRnJXGH+bIx3Zcva7fbBwcHZ2dn0g5+fnw8PD0ojUkMczjm3tbVVvb31er3SKWoO/J5zRH1kmRgOh6enp9qj+B+3t7ai3+93u93Hx0ftgSjgsFI2Go3e39+fnp76/f719fXNzc1oNNIelA7vcRRFMfl6M7MfxRsMBvv7+9qjqIXvW4EJIeJI47TUgsB3xWHngIjvso9Gst9lb/ZUNEbBFjPczsGZxyJU7sEX4qtDJxK7y2BIKksX9JyDzeNntF5Uar+t0EdNigvFd9lHI4vvsm90cEl4g2k0fZUXlfJFsOoFmrwpE2o44dSZmvrEdeKYfh1ISzD9uPoyLVedqU0/rnUsVts5qiec9n2lS9Mxe39czcOKdPKRdhlj1X0YuSBk5Y23yXLkUMaY1IedY2jQK6RzZX4DYcvT1985pCVQX5owLE9fPw43byEsLE0wZqdvIg7373IYWZqQbE7fShzuv0WxszSBGZy+/gkpzDK0c8Aa4oCIOCAiDoiIAyLigIg4ICIOiIgDIuKAiDggIg6IiAMi4oCIOCAiDoiIAyLigIg4ICIOiIgDIuKAiDggIg6IiAMi4oCIOCAiDoiIAyLigIg4ICIOiIgDIuKAiDggIg6IiAMi4oCIOCAiDoiIAyLigIg4ICIOiP4AVy5pk8krGhUAAAAASUVORK5CYII=" />
+
+<!-- iOS: soporte para instalar como app de pantalla de inicio -->
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="PULSO·CAFÉ" />
+
+<!-- Android / Chrome -->
+<meta name="mobile-web-app-capable" content="yes" />
+
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;700;900&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { margin: 0; background: #E9E7E1; }
+  ::-webkit-scrollbar { display: none; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel" data-presets="react">
+const { useState, useMemo } = React;
+
+/* ── Conexión a Supabase ──
+   Solo se usa la clave "publishable" (anon), diseñada para vivir en el frontend.
+   La política de la tabla permite INSERTAR pero no LEER desde aquí. */
+const SUPABASE_URL = "https://sdkkouosgpxeadvqlqux.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_mXD8VUWqd0ScaB7ecad7hw_b_ZtC-EX";
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+
+const INK = "#0A0A0A";
+const PAPER = "#FFFFFF";
+const BONE = "#EFEDE7";
+const GRAY_D = "#57554E";
+
+const AREAS = [
+  { id: "equipo", nombre: "Equipamiento", peso: 0.25, puntaje: 74 },
+  { id: "higiene", nombre: "Higiene y sanidad", peso: 0.25, puntaje: 91 },
+  { id: "personal", nombre: "Personal", peso: 0.20, puntaje: 68 },
+  { id: "finanzas", nombre: "Finanzas", peso: 0.15, puntaje: 80 },
+  { id: "cliente", nombre: "Cliente", peso: 0.15, puntaje: 76 },
+];
+
+function estadoDe(p) {
+  if (p >= 85) return "ÓPTIMO";
+  if (p >= 60) return "BUENO";
+  return "BAJO";
+}
+
+const INSIGNIAS = [
+  { id: 1, nombre: "Higiene impecable", desc: "90+ en sanidad, 3 meses seguidos", obtenida: true },
+  { id: 2, nombre: "Equipo certificado", desc: "Mantenimiento al día en toda la barra", obtenida: true },
+  { id: 3, nombre: "Cero incidentes", desc: "180 días sin alertas de reparación", obtenida: true },
+  { id: 4, nombre: "Barista certificado", desc: "Curso SCA completado por el equipo", obtenida: false },
+  { id: 5, nombre: "Cliente fiel", desc: "80+ en recompra durante un trimestre", obtenida: false },
+  { id: 6, nombre: "Mentor del barrio", desc: "Recomienda a 3 cafeterías vecinas", obtenida: false },
+];
+
+const BARISTAS = [
+  { id: 1, nombre: "Emilio Duarte", especialidad: "Reparación de espresso", distancia: "0.6 km", disponible: true, x: 62, y: 38 },
+  { id: 2, nombre: "Renata Cobos", especialidad: "Curso de latte art", distancia: "1.1 km", disponible: true, x: 30, y: 58 },
+  { id: 3, nombre: "Iván Salcedo", especialidad: "Normativa sanitaria", distancia: "1.4 km", disponible: false, x: 74, y: 68 },
+  { id: 4, nombre: "Dana Uribe", especialidad: "Asesoría financiera", distancia: "2.0 km", disponible: true, x: 45, y: 22 },
+];
+
+const TABS = [
+  { id: "estado", n: "01", titulo: "Estado" },
+  { id: "insignias", n: "02", titulo: "Insignias" },
+  { id: "baristas", n: "03", titulo: "Baristas" },
+];
+
+/* ── Perfil BARISTA ── */
+const CURSOS_BARISTA = [
+  { id: 1, nombre: "Fundamentos de espresso", nivel: "Nivel 1", progreso: 100, estado: "COMPLETO" },
+  { id: 2, nombre: "Leche y latte art", nivel: "Nivel 2", progreso: 100, estado: "COMPLETO" },
+  { id: 3, nombre: "Gestión de barra y tiempos", nivel: "Nivel 3", progreso: 60, estado: "EN CURSO" },
+  { id: 4, nombre: "Catación y perfiles de origen", nivel: "Nivel 4", progreso: 0, estado: "BLOQUEADO" },
+  { id: 5, nombre: "Certificación SCA nivel 1", nivel: "Nivel 5", progreso: 0, estado: "BLOQUEADO" },
+];
+
+const TABS_BARISTA = [
+  { id: "capacitarte", n: "01", titulo: "Capacitarte" },
+  { id: "ingresos", n: "02", titulo: "Ingresos" },
+];
+
+const FUENTES_INGRESO = [
+  {
+    id: "cap-baristas",
+    n: "01",
+    nombre: "Capacitaciones a baristas",
+    desc: "Imparte los cursos que ya dominas a otros baristas de la red.",
+    tarifa: "$450 / SESIÓN",
+    estado: "ACTIVA",
+  },
+  {
+    id: "cap-cafeterias",
+    n: "02",
+    nombre: "Capacitaciones a cafeterías",
+    desc: "Resuelve alertas de personal e higiene directo en la barra del cliente.",
+    tarifa: "$900 / VISITA",
+    estado: "ACTIVA",
+  },
+  {
+    id: "membresias",
+    n: "03",
+    nombre: "Membresías",
+    desc: "Cafeterías te pagan una cuota fija por soporte continuo cada mes.",
+    tarifa: "$600 / CAFETERÍA / MES",
+    estado: "2 SUSCRITAS",
+  },
+];
+
+function Dial({ valor }) {
+  const cx = 140, cy = 140, r = 108;
+  const startAngle = -225, sweep = 270;
+  const angleFor = (v) => startAngle + (v / 100) * sweep;
+  const toXY = (deg) => {
+    const rad = (deg * Math.PI) / 180;
+    return [cx + r * Math.cos(rad), cy + r * Math.sin(rad)];
+  };
+  const ticks = [];
+  for (let v = 0; v <= 100; v += 5) {
+    const major = v % 25 === 0;
+    const deg = angleFor(v);
+    const [x1, y1] = toXY(deg);
+    const inner = r - (major ? 16 : 8);
+    const rad = (deg * Math.PI) / 180;
+    const x2 = cx + inner * Math.cos(rad);
+    const y2 = cy + inner * Math.sin(rad);
+    ticks.push(
+      <line key={v} x1={x1} y1={y1} x2={x2} y2={y2} stroke={INK} strokeWidth={major ? 2 : 1} opacity={major ? 1 : 0.35} />
+    );
+  }
+  const needleDeg = angleFor(valor);
+  const needleRad = (needleDeg * Math.PI) / 180;
+  const nx = cx + (r - 26) * Math.cos(needleRad);
+  const ny = cy + (r - 26) * Math.sin(needleRad);
+
+  const arcPath = (from, to, radius) => {
+    const [x1, y1] = toXY(from);
+    const [x2, y2] = toXY(to);
+    const large = to - from > 180 ? 1 : 0;
+    return `M ${x1} ${y1} A ${radius} ${radius} 0 ${large} 1 ${x2} ${y2}`;
+  };
+
+  return (
+    <svg width="280" height="240" viewBox="0 0 280 220">
+      <path d={arcPath(startAngle, startAngle + sweep, r)} fill="none" stroke={INK} strokeWidth="1.5" opacity="0.5" />
+      {ticks}
+      <path d={arcPath(startAngle, needleDeg, r)} fill="none" stroke={INK} strokeWidth="4" />
+      <line x1={cx} y1={cy} x2={nx} y2={ny} stroke={INK} strokeWidth="2" />
+      <circle cx={cx} cy={cy} r="4" fill={INK} />
+      <text x={cx} y={cy + 42} textAnchor="middle" fontFamily="Archivo" fontWeight="900" fontSize="46" fill={INK}>
+        {Math.round(valor)}
+      </text>
+      <text x={cx} y={cy + 62} textAnchor="middle" fontFamily="Space Mono" fontSize="11" letterSpacing="2" fill={GRAY_D}>
+        SOBRE 100
+      </text>
+    </svg>
+  );
+}
+
+function BarraArea({ area }) {
+  return (
+    <div style={{ marginBottom: 16 }}>
+      <div style={{ display: "flex", justifyContent: "space-between", fontFamily: "Space Mono", fontSize: 11, letterSpacing: 0.5, color: INK, marginBottom: 6 }}>
+        <span>{area.nombre.toUpperCase()}</span>
+        <span>{area.puntaje}/100 · P{Math.round(area.peso * 100)}</span>
+      </div>
+      <div style={{ height: 6, background: "#DAD7CE", position: "relative" }}>
+        <div style={{ position: "absolute", left: 0, top: 0, bottom: 0, width: `${area.puntaje}%`, background: INK }} />
+      </div>
+    </div>
+  );
+}
+
+function PantallaEstado({ saludTotal, mostrarFormula, setMostrarFormula }) {
+  const estado = estadoDe(saludTotal);
+  return (
+    <div>
+      <div style={S.eyebrow}>REGISTRO Nº 0192 — GUADALAJARA, JAL.</div>
+      <h1 style={S.h1}>Café Alameda</h1>
+      <div style={S.metaRow}>REGISTRADO 12·03·2026</div>
+
+      <div style={S.dialWrap}>
+        <Dial valor={saludTotal} />
+        <div style={{ ...S.estadoTag, borderColor: INK }}>{estado}</div>
+      </div>
+
+      <div style={S.legend}>
+        <div style={S.legendRow}><span>85–100</span><span>ÓPTIMO</span></div>
+        <div style={S.legendRow}><span>60–84</span><span>BUENO</span></div>
+        <div style={S.legendRow}><span>0–59</span><span>BAJO</span></div>
+      </div>
+
+      <button style={S.enlaceFormula} onClick={() => setMostrarFormula(!mostrarFormula)}>
+        {mostrarFormula ? "— ocultar el cálculo" : "+ cómo se calcula este número"}
+      </button>
+      {mostrarFormula && (
+        <div style={S.cajaFormula}>
+          <div style={{ fontFamily: "Space Mono", fontSize: 11, color: GRAY_D, marginBottom: 10 }}>
+            SALUD = Σ (PUNTAJE DE ÁREA × PESO)
+          </div>
+          {AREAS.map((a) => (
+            <div key={a.id} style={S.filaFormula}>
+              <span>{a.nombre}</span>
+              <span>{a.puntaje} × {Math.round(a.peso * 100)}% = {(a.puntaje * a.peso).toFixed(1)}</span>
+            </div>
+          ))}
+          <div style={{ ...S.filaFormula, borderTop: `1px solid ${INK}`, paddingTop: 8, fontWeight: 700 }}>
+            <span>TOTAL</span>
+            <span>{saludTotal.toFixed(1)}</span>
+          </div>
+        </div>
+      )}
+
+      <div style={S.h2}>Desglose por área</div>
+      {AREAS.map((a) => <BarraArea key={a.id} area={a} />)}
+    </div>
+  );
+}
+
+function PantallaInsignias() {
+  const obtenidas = INSIGNIAS.filter((i) => i.obtenida).length;
+  return (
+    <div>
+      <div style={S.eyebrow}>{obtenidas} DE {INSIGNIAS.length} OBTENIDAS</div>
+      <h1 style={S.h1}>Insignias</h1>
+      <p style={S.parrafo}>Se otorgan automáticamente cuando un área se mantiene estable por un periodo. Son un registro, no una calificación.</p>
+      <div style={{ marginTop: 20 }}>
+        {INSIGNIAS.map((ins) => (
+          <div key={ins.id} style={{ ...S.filaInsignia, opacity: ins.obtenida ? 1 : 0.4 }}>
+            <div style={S.iconoInsignia}>
+              {ins.obtenida ? (
+                <svg width="22" height="22" viewBox="0 0 24 24"><path d="M4 12 L10 18 L20 6" stroke={INK} strokeWidth="2.5" fill="none" strokeLinecap="square"/></svg>
+              ) : (
+                <svg width="22" height="22" viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="10" fill="none" stroke={INK} strokeWidth="2"/><path d="M8 10 V7 a4 4 0 0 1 8 0 v3" fill="none" stroke={INK} strokeWidth="2"/></svg>
+              )}
+            </div>
+            <div style={{ flex: 1 }}>
+              <div style={{ fontWeight: 700, fontSize: 15 }}>{ins.nombre}</div>
+              <div style={{ fontFamily: "Space Mono", fontSize: 11, color: GRAY_D, marginTop: 3, letterSpacing: 0.3 }}>{ins.desc.toUpperCase()}</div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function MapaAbstracto({ baristas, activo, setActivo }) {
+  return (
+    <svg width="100%" height="220" viewBox="0 0 320 220" style={{ background: BONE, border: `1px solid ${INK}` }}>
+      {[40, 90, 140, 190, 240, 290].map((x) => <line key={"v"+x} x1={x} y1="0" x2={x} y2="220" stroke={INK} strokeWidth="0.5" opacity="0.25" />)}
+      {[35, 75, 115, 155, 195].map((y) => <line key={"h"+y} x1="0" y1={y} x2="320" y2={y} stroke={INK} strokeWidth="0.5" opacity="0.25" />)}
+      <circle cx="160" cy="110" r="5" fill={INK} />
+      <circle cx="160" cy="110" r="10" fill="none" stroke={INK} strokeWidth="1" />
+      <text x="160" y="130" textAnchor="middle" fontFamily="Space Mono" fontSize="9" letterSpacing="1" fill={GRAY_D}>TÚ ESTÁS AQUÍ</text>
+      {baristas.map((b, idx) => {
+        const x = 20 + (b.x / 100) * 280;
+        const y = 15 + (b.y / 100) * 190;
+        const sel = activo === b.id;
+        return (
+          <g key={b.id} onClick={() => setActivo(b.id)} style={{ cursor: "pointer" }}>
+            <circle cx={x} cy={y} r={sel ? 12 : 9} fill={sel ? INK : PAPER} stroke={INK} strokeWidth="2" />
+            <text x={x} y={y + 4} textAnchor="middle" fontFamily="Space Mono" fontWeight="700" fontSize="10" fill={sel ? PAPER : INK}>{idx + 1}</text>
+          </g>
+        );
+      })}
+    </svg>
+  );
+}
+
+function PantallaBaristas() {
+  const [activo, setActivo] = useState(BARISTAS[0].id);
+  return (
+    <div>
+      <div style={S.eyebrow}>{BARISTAS.filter(b=>b.disponible).length} DISPONIBLES CERCA DE TI</div>
+      <h1 style={S.h1}>Baristas</h1>
+      <p style={S.parrafo}>Profesionales verificados en tu zona que pueden resolver una alerta en persona.</p>
+      <MapaAbstracto baristas={BARISTAS} activo={activo} setActivo={setActivo} />
+      <div style={{ marginTop: 18 }}>
+        {BARISTAS.map((b, idx) => (
+          <div
+            key={b.id}
+            onClick={() => setActivo(b.id)}
+            style={{ ...S.filaBarista, borderColor: activo === b.id ? INK : "#D8D5CB" }}
+          >
+            <div style={S.numeroBarista}>{idx + 1}</div>
+            <div style={{ flex: 1 }}>
+              <div style={{ fontWeight: 700, fontSize: 15 }}>{b.nombre}</div>
+              <div style={{ fontSize: 13, color: GRAY_D, marginTop: 2 }}>{b.especialidad}</div>
+              <div style={{ fontFamily: "Space Mono", fontSize: 11, color: GRAY_D, marginTop: 4, letterSpacing: 0.4 }}>
+                {b.distancia.toUpperCase()} · {b.disponible ? "DISPONIBLE" : "OCUPADO"}
+              </div>
+            </div>
+            <button style={{ ...S.botonContactar, opacity: b.disponible ? 1 : 0.35 }} disabled={!b.disponible}>
+              Contactar
+            </button>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function PantallaLanding({ onElegir }) {
+  return (
+    <div style={S.landingWrap}>
+      <div style={S.eyebrow}>ANTES DE ENTRAR</div>
+      <h1 style={S.h1}>¿Cómo entras?</h1>
+      <p style={S.parrafo}>Selecciona tu perfil. Puedes cambiarlo cuando quieras desde el encabezado.</p>
+
+      <button style={S.tileLanding} onClick={() => onElegir("cafeteria")}>
+        <div style={S.tileNum}>01</div>
+        <div style={{ flex: 1 }}>
+          <div style={S.tileTitulo}>Cafetería</div>
+          <div style={S.tileDesc}>Mide tu salud operativa, gana insignias y encuentra baristas cerca de ti.</div>
+        </div>
+        <div style={S.tileFlecha}>→</div>
+      </button>
+
+      <button style={S.tileLanding} onClick={() => onElegir("barista")}>
+        <div style={S.tileNum}>02</div>
+        <div style={{ flex: 1 }}>
+          <div style={S.tileTitulo}>Barista</div>
+          <div style={S.tileDesc}>Certifícate, imparte capacitaciones y genera ingresos dentro de la red.</div>
+        </div>
+        <div style={S.tileFlecha}>→</div>
+      </button>
+
+      <button style={S.enlacePanel} onClick={() => onElegir("panel")}>panel de administrador →</button>
+    </div>
+  );
+}
+
+function PantallaCapacitarte() {
+  const completos = CURSOS_BARISTA.filter((c) => c.progreso === 100).length;
+  return (
+    <div>
+      <div style={S.eyebrow}>{completos} DE {CURSOS_BARISTA.length} CURSOS COMPLETOS</div>
+      <h1 style={S.h1}>Capacitarte</h1>
+      <p style={S.parrafo}>Tu ruta de certificación. Cada nivel desbloquea el siguiente y sube tu tarifa como capacitador.</p>
+      <div style={{ marginTop: 20 }}>
+        {CURSOS_BARISTA.map((c) => (
+          <div key={c.id} style={{ marginBottom: 18, opacity: c.estado === "BLOQUEADO" ? 0.4 : 1 }}>
+            <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 4 }}>
+              <div>
+                <div style={{ fontWeight: 700, fontSize: 15 }}>{c.nombre}</div>
+                <div style={{ fontFamily: "Space Mono", fontSize: 10, color: GRAY_D, letterSpacing: 0.5, marginTop: 2 }}>{c.nivel.toUpperCase()}</div>
+              </div>
+              <div style={{ fontFamily: "Space Mono", fontSize: 11, fontWeight: 700, alignSelf: "center" }}>{c.estado}</div>
+            </div>
+            <div style={{ height: 6, background: "#DAD7CE", marginTop: 8 }}>
+              <div style={{ height: "100%", width: `${c.progreso}%`, background: INK }} />
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function PantallaIngresos() {
+  return (
+    <div>
+      <div style={S.eyebrow}>3 FUENTES DISPONIBLES</div>
+      <h1 style={S.h1}>Ingresos</h1>
+      <p style={S.parrafo}>Así generas ingresos dentro de la red PULSO·CAFÉ. Puedes activar más de una a la vez.</p>
+      <div style={{ marginTop: 20 }}>
+        {FUENTES_INGRESO.map((f) => (
+          <div key={f.id} style={S.cardIngreso}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+              <div style={S.tileNum}>{f.n}</div>
+              <div style={S.estadoTagChico}>{f.estado}</div>
+            </div>
+            <div style={{ fontWeight: 700, fontSize: 16, marginTop: 8 }}>{f.nombre}</div>
+            <div style={{ fontSize: 13, color: GRAY_D, marginTop: 4, lineHeight: 1.5 }}>{f.desc}</div>
+            <div style={{ fontFamily: "Space Mono", fontSize: 12, fontWeight: 700, marginTop: 12, letterSpacing: 0.5 }}>{f.tarifa}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function PantallaRegistroCafeteria({ onRegistrado }) {
+  const [nombreCafeteria, setNombreCafeteria] = useState("");
+  const [responsable, setResponsable] = useState("");
+  const [ciudad, setCiudad] = useState("");
+  const [telefono, setTelefono] = useState("");
+  const [correo, setCorreo] = useState("");
+  const [acepta, setAcepta] = useState(false);
+  const [enviando, setEnviando] = useState(false);
+  const [error, setError] = useState("");
+  const [mostrarTerminos, setMostrarTerminos] = useState(false);
+
+  const completo = nombreCafeteria && responsable && ciudad && telefono && acepta;
+
+  const enviarRegistro = async () => {
+    setError("");
+    setEnviando(true);
+    const { error: errorSupabase } = await supabaseClient.from("cafeterias").insert([
+      {
+        nombre_cafeteria: nombreCafeteria,
+        responsable,
+        ciudad,
+        telefono,
+        correo: correo || null,
+        acepto_terminos: acepta,
+      },
+    ]);
+    setEnviando(false);
+    if (errorSupabase) {
+      setError("No se pudo guardar el registro. Intenta de nuevo en unos segundos.");
+      console.error(errorSupabase);
+      return;
+    }
+    onRegistrado();
+  };
+
+  return (
+    <div>
+      <div style={S.eyebrow}>PASO 1 DE 1</div>
+      <h1 style={S.h1}>Registro de cafetería</h1>
+      <p style={S.parrafo}>Estos datos nos permiten contactarte cuando envíes una alerta o quieras conectar con un barista.</p>
+
+      <div style={S.h2}>Datos de la cafetería</div>
+      <CampoTexto etiqueta="NOMBRE DE LA CAFETERÍA" valor={nombreCafeteria} onChange={setNombreCafeteria} placeholder="Ej. Café Alameda" />
+      <CampoTexto etiqueta="NOMBRE DEL RESPONSABLE" valor={responsable} onChange={setResponsable} placeholder="Ej. Mariana Solís" />
+      <CampoTexto etiqueta="CIUDAD / ZONA" valor={ciudad} onChange={setCiudad} placeholder="Ej. Guadalajara, Jal." />
+      <CampoTexto etiqueta="TELÉFONO / WHATSAPP" valor={telefono} onChange={setTelefono} placeholder="Ej. 33 1234 5678" tipo="tel" />
+      <CampoTexto etiqueta="CORREO ELECTRÓNICO" valor={correo} onChange={setCorreo} placeholder="Ej. contacto@cafe.com" tipo="email" />
+
+      <div style={S.filaCheckbox}>
+        <div style={{ ...S.checkbox, ...(acepta ? S.checkboxActivo : {}) }} onClick={() => setAcepta(!acepta)}>{acepta ? "✓" : ""}</div>
+        <div style={S.textoCheckbox}>
+          Acepto los <button style={S.enlaceTerminos} onClick={() => setMostrarTerminos(true)}>términos de la red</button> y autorizo la verificación de mis datos.
+        </div>
+      </div>
+      {mostrarTerminos && <ModalTerminos onCerrar={() => setMostrarTerminos(false)} />}
+
+      {error && <div style={S.mensajeError}>{error}</div>}
+
+      <button
+        style={{ ...S.botonRegistro, opacity: completo && !enviando ? 1 : 0.35 }}
+        disabled={!completo || enviando}
+        onClick={enviarRegistro}
+      >
+        {enviando ? "Guardando…" : "Enviar registro"}
+      </button>
+    </div>
+  );
+}
+
+function AppCafeteria() {
+  const [tab, setTab] = useState("estado");
+  const [mostrarFormula, setMostrarFormula] = useState(false);
+  const saludTotal = useMemo(() => AREAS.reduce((s, a) => s + a.puntaje * a.peso, 0), []);
+  return (
+    <React.Fragment>
+      <div style={S.contenido}>
+        {tab === "estado" && <PantallaEstado saludTotal={saludTotal} mostrarFormula={mostrarFormula} setMostrarFormula={setMostrarFormula} />}
+        {tab === "insignias" && <PantallaInsignias />}
+        {tab === "baristas" && <PantallaBaristas />}
+      </div>
+      <div style={S.tabBar}>
+        {TABS.map((t) => (
+          <button key={t.id} onClick={() => setTab(t.id)} style={{ ...S.tabBtn, opacity: tab === t.id ? 1 : 0.4 }}>
+            <div style={S.tabNum}>{t.n}</div>
+            <div style={S.tabTitulo}>{t.titulo}</div>
+            {tab === t.id && <div style={S.tabIndicador} />}
+          </button>
+        ))}
+      </div>
+    </React.Fragment>
+  );
+}
+
+const SECCIONES_TERMINOS = [
+  { titulo: "Qué es PULSO·CAFÉ", texto: "Somos el puente entre cafeterías y baristas. Te damos herramientas para medir la salud de tu negocio, ganar insignias y conectar con la persona correcta. Los servicios (cursos, visitas, soporte) los prestan los baristas directamente — nosotros facilitamos el contacto." },
+  { titulo: "Nadie trabaja para nadie", texto: "Los baristas son profesionales independientes: ponen sus propias tarifas, sus horarios y deciden qué trabajos tomar. No son empleados de PULSO·CAFÉ ni de las cafeterías. Cada quien es responsable de sus propios impuestos." },
+  { titulo: "Tu contacto está protegido", texto: "Tu teléfono y correo nunca se muestran a otros usuarios. Todo primer contacto pasa por nosotros. Así nadie recibe mensajes no deseados y tus datos quedan seguros, conforme a la ley mexicana de protección de datos. Puedes pedirnos ver, corregir o borrar tu información cuando quieras." },
+  { titulo: "Los tratos se hacen por aquí", texto: "Si conociste a alguien gracias a PULSO·CAFÉ, los servicios se acuerdan a través de la plataforma. Saltarse la plataforma para evitar la comisión es causa de baja definitiva y del cobro de la comisión que correspondía. Esto protege a toda la red, incluido tu propio trabajo." },
+  { titulo: "Dinos siempre la verdad", texto: "Tu registro debe tener información real: experiencia, certificaciones, datos de contacto. Podemos verificarla. Si algo resulta falso, podemos dar de baja la cuenta." },
+  { titulo: "Precios y comisiones claras", texto: "Cada barista fija su tarifa. Antes de confirmar cualquier servicio, verás claramente cuánto cuesta y qué comisión cobra la plataforma. Sin sorpresas. Todo en pesos mexicanos." },
+  { titulo: "Compromisos del barista", texto: "Llegar a las citas acordadas, hacer el trabajo con profesionalismo y tratar con respeto a la cafetería y su equipo." },
+  { titulo: "Compromisos de la cafetería", texto: "Pagar a tiempo, dar condiciones seguras y limpias durante las visitas, y tratar al barista con respeto." },
+  { titulo: "El puntaje de salud es una guía", texto: "Tu estado de salud e insignias son una autoevaluación para ayudarte a mejorar. No son un certificado oficial ni sustituyen permisos o inspecciones de las autoridades sanitarias." },
+  { titulo: "Lo que no podemos garantizar", texto: "Conectamos personas, pero no podemos garantizar el resultado de cada servicio ni que todos cumplan sus acuerdos. Si un servicio sale mal, el asunto se resuelve entre las partes involucradas. Nuestra responsabilidad tiene límites definidos en la versión completa." },
+  { titulo: "Podemos dar de baja cuentas", texto: "Si alguien miente, incumple estos términos o pone en riesgo a otros usuarios, podemos suspender o cancelar su cuenta para proteger a la red." },
+  { titulo: "La versión completa manda", texto: "Este es un resumen para que sea fácil de entender. La versión legal completa —disponible a solicitud en [correo de contacto]— es la que rige en caso de cualquier diferencia. Estos términos se rigen por las leyes mexicanas." },
+];
+
+function ModalTerminos({ onCerrar }) {
+  return (
+    <div style={S.fondoModalTerminos} onClick={onCerrar}>
+      <div style={S.modalTerminos} onClick={(e) => e.stopPropagation()}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 4 }}>
+          <div style={S.eyebrow}>PULSO·CAFÉ</div>
+          <button onClick={onCerrar} style={S.botonCerrarModal}>✕</button>
+        </div>
+        <h1 style={{ ...S.h1, fontSize: 24 }}>Términos y condiciones</h1>
+        <p style={S.parrafo}>En palabras simples: qué puedes esperar de nosotros y qué esperamos de ti. Aplica igual a cafeterías y baristas.</p>
+        {SECCIONES_TERMINOS.map((s, idx) => (
+          <div key={idx} style={{ marginTop: 18 }}>
+            <div style={{ fontWeight: 700, fontSize: 14 }}>{s.titulo}</div>
+            <p style={{ fontSize: 13, color: GRAY_D, lineHeight: 1.6, marginTop: 4 }}>{s.texto}</p>
+          </div>
+        ))}
+        <button style={{ ...S.botonRegistro, marginTop: 24 }} onClick={onCerrar}>Cerrar</button>
+      </div>
+    </div>
+  );
+}
+
+const ESPECIALIDADES_OPCIONES = ["Espresso", "Latte art", "Tueste", "Catación", "Gestión de barra", "Atención al cliente"];
+const DIAS_OPCIONES = ["L", "M", "M", "J", "V", "S", "D"];
+
+function CampoTexto({ etiqueta, valor, onChange, placeholder, tipo }) {
+  return (
+    <div style={{ marginBottom: 18 }}>
+      <div style={S.labelCampo}>{etiqueta}</div>
+      <input
+        type={tipo || "text"}
+        value={valor}
+        onChange={(e) => onChange(e.target.value)}
+        placeholder={placeholder}
+        style={S.inputCampo}
+      />
+    </div>
+  );
+}
+
+function PantallaRegistroBarista({ onRegistrado }) {
+  const [nombre, setNombre] = useState("");
+  const [ciudad, setCiudad] = useState("");
+  const [anios, setAnios] = useState("");
+  const [especialidades, setEspecialidades] = useState([]);
+  const [certificaciones, setCertificaciones] = useState("");
+  const [cafeteria, setCafeteria] = useState("");
+  const [telefono, setTelefono] = useState("");
+  const [correo, setCorreo] = useState("");
+  const [tarifa, setTarifa] = useState("");
+  const [dias, setDias] = useState([]);
+  const [acepta, setAcepta] = useState(false);
+  const [enviando, setEnviando] = useState(false);
+  const [error, setError] = useState("");
+  const [mostrarTerminos, setMostrarTerminos] = useState(false);
+
+  const toggleEsp = (e) =>
+    setEspecialidades((prev) => (prev.includes(e) ? prev.filter((x) => x !== e) : [...prev, e]));
+  const toggleDia = (idx) =>
+    setDias((prev) => (prev.includes(idx) ? prev.filter((x) => x !== idx) : [...prev, idx]));
+
+  const completo = nombre && ciudad && telefono && acepta;
+
+  const enviarRegistro = async () => {
+    setError("");
+    setEnviando(true);
+    const diasTexto = dias.map((idx) => DIAS_OPCIONES[idx]);
+    const { error: errorSupabase } = await supabaseClient.from("baristas").insert([
+      {
+        nombre,
+        ciudad,
+        telefono,
+        correo: correo || null,
+        anios_experiencia: anios ? Number(anios) : null,
+        cafeteria_actual: cafeteria || null,
+        certificaciones: certificaciones || null,
+        especialidades,
+        dias_disponibles: diasTexto,
+        tarifa_sesion: tarifa ? Number(tarifa) : null,
+        acepto_terminos: acepta,
+      },
+    ]);
+    setEnviando(false);
+    if (errorSupabase) {
+      setError("No se pudo guardar el registro. Intenta de nuevo en unos segundos.");
+      console.error(errorSupabase);
+      return;
+    }
+    onRegistrado({ nombre, ciudad });
+  };
+
+  return (
+    <div>
+      <div style={S.eyebrow}>PASO 1 DE 1</div>
+      <h1 style={S.h1}>Registro de barista</h1>
+      <p style={S.parrafo}>Esta información te hace visible para las cafeterías de tu zona y define tu perfil dentro de la red.</p>
+
+      <div style={S.h2}>Datos personales</div>
+      <CampoTexto etiqueta="NOMBRE COMPLETO" valor={nombre} onChange={setNombre} placeholder="Ej. Renata Cobos" />
+      <CampoTexto etiqueta="CIUDAD / ZONA" valor={ciudad} onChange={setCiudad} placeholder="Ej. Guadalajara, Jal." />
+      <CampoTexto etiqueta="TELÉFONO / WHATSAPP" valor={telefono} onChange={setTelefono} placeholder="Ej. 33 1234 5678" tipo="tel" />
+      <CampoTexto etiqueta="CORREO ELECTRÓNICO" valor={correo} onChange={setCorreo} placeholder="Ej. renata@correo.com" tipo="email" />
+
+      <div style={S.h2}>Experiencia</div>
+      <CampoTexto etiqueta="AÑOS EN CAFÉ DE ESPECIALIDAD" valor={anios} onChange={setAnios} placeholder="Ej. 4" tipo="number" />
+      <CampoTexto etiqueta="CAFETERÍA ACTUAL O MÁS RECIENTE" valor={cafeteria} onChange={setCafeteria} placeholder="Opcional" />
+      <CampoTexto etiqueta="CERTIFICACIONES PREVIAS" valor={certificaciones} onChange={setCertificaciones} placeholder="Ej. SCA Barista Skills, o ninguna" />
+
+      <div style={S.labelCampo}>ESPECIALIDADES</div>
+      <div style={S.chipsWrap}>
+        {ESPECIALIDADES_OPCIONES.map((e) => (
+          <button key={e} onClick={() => toggleEsp(e)} style={{ ...S.chip, ...(especialidades.includes(e) ? S.chipActivo : {}) }}>
+            {e}
+          </button>
+        ))}
+      </div>
+
+      <div style={S.h2}>Disponibilidad y tarifa</div>
+      <div style={S.labelCampo}>DÍAS DISPONIBLES</div>
+      <div style={S.chipsWrap}>
+        {DIAS_OPCIONES.map((d, idx) => (
+          <button key={idx} onClick={() => toggleDia(idx)} style={{ ...S.chipDia, ...(dias.includes(idx) ? S.chipActivo : {}) }}>
+            {d}
+          </button>
+        ))}
+      </div>
+      <CampoTexto etiqueta="TARIFA POR SESIÓN (MXN)" valor={tarifa} onChange={setTarifa} placeholder="Ej. 450" tipo="number" />
+
+      <div style={S.filaCheckbox}>
+        <div style={{ ...S.checkbox, ...(acepta ? S.checkboxActivo : {}) }} onClick={() => setAcepta(!acepta)}>{acepta ? "✓" : ""}</div>
+        <div style={S.textoCheckbox}>
+          Acepto los <button style={S.enlaceTerminos} onClick={() => setMostrarTerminos(true)}>términos de la red</button> y autorizo la verificación de mis datos.
+        </div>
+      </div>
+      {mostrarTerminos && <ModalTerminos onCerrar={() => setMostrarTerminos(false)} />}
+
+      {error && <div style={S.mensajeError}>{error}</div>}
+
+      <button
+        style={{ ...S.botonRegistro, opacity: completo && !enviando ? 1 : 0.35 }}
+        disabled={!completo || enviando}
+        onClick={enviarRegistro}
+      >
+        {enviando ? "Guardando…" : "Enviar registro"}
+      </button>
+    </div>
+  );
+}
+
+function PantallaPanelLogin({ onEntrar }) {
+  const [correo, setCorreo] = useState("");
+  const [clave, setClave] = useState("");
+  const [error, setError] = useState("");
+  const [cargando, setCargando] = useState(false);
+
+  const entrar = async () => {
+    setError("");
+    setCargando(true);
+    const { error: errorAuth } = await supabaseClient.auth.signInWithPassword({ email: correo, password: clave });
+    setCargando(false);
+    if (errorAuth) {
+      setError("Correo o contraseña incorrectos.");
+      return;
+    }
+    onEntrar();
+  };
+
+  return (
+    <div>
+      <div style={S.eyebrow}>ACCESO RESTRINGIDO</div>
+      <h1 style={S.h1}>Panel</h1>
+      <p style={S.parrafo}>Solo visible para el administrador de la red.</p>
+      <CampoTexto etiqueta="CORREO" valor={correo} onChange={setCorreo} placeholder="tu@correo.com" tipo="email" />
+      <CampoTexto etiqueta="CONTRASEÑA" valor={clave} onChange={setClave} placeholder="••••••••" tipo="password" />
+      {error && <div style={S.mensajeError}>{error}</div>}
+      <button style={{ ...S.botonRegistro, opacity: correo && clave && !cargando ? 1 : 0.35 }} disabled={!correo || !clave || cargando} onClick={entrar}>
+        {cargando ? "Entrando…" : "Entrar"}
+      </button>
+    </div>
+  );
+}
+
+function PantallaPanelLista() {
+  const [registros, setRegistros] = useState(null);
+  const [error, setError] = useState("");
+
+  React.useEffect(() => {
+    supabaseClient
+      .from("baristas")
+      .select("*")
+      .order("creado_en", { ascending: false })
+      .then(({ data, error: errorConsulta }) => {
+        if (errorConsulta) { setError("No se pudieron cargar los registros."); return; }
+        setRegistros(data);
+      });
+  }, []);
+
+  return (
+    <div>
+      <div style={S.eyebrow}>{registros ? registros.length : "…"} REGISTROS</div>
+      <h1 style={S.h1}>Baristas registrados</h1>
+      {error && <div style={S.mensajeError}>{error}</div>}
+      {registros === null && !error && <p style={S.parrafo}>Cargando…</p>}
+      {registros && registros.length === 0 && <p style={S.parrafo}>Todavía no hay registros.</p>}
+      {registros && registros.map((r) => (
+        <div key={r.id} style={S.filaRegistro}>
+          <div style={{ fontWeight: 700, fontSize: 15 }}>{r.nombre}</div>
+          <div style={{ fontFamily: "Space Mono", fontSize: 11, color: GRAY_D, marginTop: 4, lineHeight: 1.7 }}>
+            {r.ciudad ? r.ciudad.toUpperCase() : ""}<br/>
+            TEL: {r.telefono || "—"}<br/>
+            CORREO: {r.correo || "—"}<br/>
+            {r.anios_experiencia != null ? `${r.anios_experiencia} AÑOS DE EXPERIENCIA` : ""}<br/>
+            {r.especialidades && r.especialidades.length ? `ESPECIALIDADES: ${r.especialidades.join(", ").toUpperCase()}` : ""}<br/>
+            {r.tarifa_sesion != null ? `TARIFA: $${r.tarifa_sesion} MXN/SESIÓN` : ""}<br/>
+            {r.creado_en ? new Date(r.creado_en).toLocaleString("es-MX") : ""}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function PantallaPanelCafeterias() {
+  const [registros, setRegistros] = useState(null);
+  const [error, setError] = useState("");
+
+  React.useEffect(() => {
+    supabaseClient
+      .from("cafeterias")
+      .select("*")
+      .order("creado_en", { ascending: false })
+      .then(({ data, error: errorConsulta }) => {
+        if (errorConsulta) { setError("No se pudieron cargar los registros."); return; }
+        setRegistros(data);
+      });
+  }, []);
+
+  return (
+    <div>
+      <div style={S.eyebrow}>{registros ? registros.length : "…"} REGISTROS</div>
+      <h1 style={S.h1}>Cafeterías registradas</h1>
+      {error && <div style={S.mensajeError}>{error}</div>}
+      {registros === null && !error && <p style={S.parrafo}>Cargando…</p>}
+      {registros && registros.length === 0 && <p style={S.parrafo}>Todavía no hay registros.</p>}
+      {registros && registros.map((r) => (
+        <div key={r.id} style={S.filaRegistro}>
+          <div style={{ fontWeight: 700, fontSize: 15 }}>{r.nombre_cafeteria}</div>
+          <div style={{ fontFamily: "Space Mono", fontSize: 11, color: GRAY_D, marginTop: 4, lineHeight: 1.7 }}>
+            RESPONSABLE: {r.responsable || "—"}<br/>
+            {r.ciudad ? r.ciudad.toUpperCase() : ""}<br/>
+            TEL: {r.telefono || "—"}<br/>
+            CORREO: {r.correo || "—"}<br/>
+            {r.creado_en ? new Date(r.creado_en).toLocaleString("es-MX") : ""}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+const TABS_PANEL = [
+  { id: "baristas", n: "01", titulo: "Baristas" },
+  { id: "cafeterias", n: "02", titulo: "Cafeterías" },
+];
+
+function AppPanel() {
+  const [autenticado, setAutenticado] = useState(false);
+  const [tabPanel, setTabPanel] = useState("baristas");
+
+  if (!autenticado) {
+    return (
+      <div style={S.contenido}>
+        <PantallaPanelLogin onEntrar={() => setAutenticado(true)} />
+      </div>
+    );
+  }
+
+  return (
+    <React.Fragment>
+      <div style={S.contenido}>
+        {tabPanel === "baristas" && <PantallaPanelLista />}
+        {tabPanel === "cafeterias" && <PantallaPanelCafeterias />}
+      </div>
+      <div style={S.tabBar}>
+        {TABS_PANEL.map((t) => (
+          <button key={t.id} onClick={() => setTabPanel(t.id)} style={{ ...S.tabBtn, opacity: tabPanel === t.id ? 1 : 0.4 }}>
+            <div style={S.tabNum}>{t.n}</div>
+            <div style={S.tabTitulo}>{t.titulo}</div>
+            {tabPanel === t.id && <div style={S.tabIndicador} />}
+          </button>
+        ))}
+      </div>
+    </React.Fragment>
+  );
+}
+
+function AppBarista() {
+  const [tab, setTab] = useState("capacitarte");
+  return (
+    <React.Fragment>
+      <div style={S.contenido}>
+        {tab === "capacitarte" && <PantallaCapacitarte />}
+        {tab === "ingresos" && <PantallaIngresos />}
+      </div>
+      <div style={S.tabBar}>
+        {TABS_BARISTA.map((t) => (
+          <button key={t.id} onClick={() => setTab(t.id)} style={{ ...S.tabBtn, opacity: tab === t.id ? 1 : 0.4 }}>
+            <div style={S.tabNum}>{t.n}</div>
+            <div style={S.tabTitulo}>{t.titulo}</div>
+            {tab === t.id && <div style={S.tabIndicador} />}
+          </button>
+        ))}
+      </div>
+    </React.Fragment>
+  );
+}
+function App() {
+  const [perfil, setPerfil] = useState(null); // null | "cafeteria" | "barista"
+  const [baristaRegistrado, setBaristaRegistrado] = useState(false);
+  const [cafeteriaRegistrada, setCafeteriaRegistrada] = useState(false);
+
+  return (
+    <div style={S.escenario}>
+      <div style={S.telefono}>
+        <div style={S.notch} />
+        <div style={S.barraEstado}>
+          <span>9:41</span>
+          <span style={{ display: "flex", gap: 5, alignItems: "center" }}>
+            <svg width="16" height="11" viewBox="0 0 16 11"><rect x="0" y="7" width="3" height="4" fill={INK}/><rect x="4.5" y="5" width="3" height="6" fill={INK}/><rect x="9" y="2.5" width="3" height="8.5" fill={INK}/><rect x="13.5" y="0" width="2.5" height="11" fill={INK}/></svg>
+            <svg width="18" height="11" viewBox="0 0 18 11"><rect x="0.5" y="0.5" width="15" height="10" rx="2" fill="none" stroke={INK}/><rect x="16.3" y="3.5" width="1.3" height="4" fill={INK}/><rect x="2" y="2" width="11" height="7" fill={INK}/></svg>
+          </span>
+        </div>
+
+        <div style={S.marcaApp}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+            <div>
+              <div style={S.marcaTexto}>PULSO·CAFÉ</div>
+              <div style={S.marcaSub}>
+                {perfil === "barista" ? "PERFIL BARISTA" : perfil === "cafeteria" ? "PERFIL CAFETERÍA" : perfil === "panel" ? "PANEL DE ADMINISTRADOR" : "SALUD OPERATIVA — CAFETERÍAS INDEPENDIENTES"}
+              </div>
+            </div>
+            {perfil && (
+              <button style={S.cambiarPerfil} onClick={() => setPerfil(null)}>← cambiar</button>
+            )}
+          </div>
+        </div>
+
+        {perfil === null && <div style={S.contenido}><PantallaLanding onElegir={setPerfil} /></div>}
+        {perfil === "cafeteria" && !cafeteriaRegistrada && (
+          <div style={S.contenido}>
+            <PantallaRegistroCafeteria onRegistrado={() => setCafeteriaRegistrada(true)} />
+          </div>
+        )}
+        {perfil === "cafeteria" && cafeteriaRegistrada && <AppCafeteria />}
+        {perfil === "barista" && !baristaRegistrado && (
+          <div style={S.contenido}>
+            <PantallaRegistroBarista onRegistrado={() => setBaristaRegistrado(true)} />
+          </div>
+        )}
+        {perfil === "barista" && baristaRegistrado && <AppBarista />}
+        {perfil === "panel" && <AppPanel />}
+
+        <div style={S.homeIndicator} />
+      </div>
+      <div style={S.notaPie}>Vista previa · dimensiones de referencia iPhone / Android</div>
+    </div>
+  );
+}
+
+const S = {
+  escenario: { minHeight: "100vh", background: BONE, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "28px 12px", fontFamily: "Inter, sans-serif" },
+  telefono: { width: 375, maxWidth: "100%", height: 812, maxHeight: "88vh", background: PAPER, border: `2px solid ${INK}`, position: "relative", display: "flex", flexDirection: "column", overflow: "hidden", boxShadow: "10px 10px 0 rgba(10,10,10,0.9)" },
+  notch: { position: "absolute", top: 0, left: "50%", transform: "translateX(-50%)", width: 120, height: 22, background: INK, borderRadius: "0 0 14px 14px", zIndex: 5 },
+  barraEstado: { display: "flex", justifyContent: "space-between", padding: "10px 22px 4px", fontFamily: "Space Mono", fontSize: 12, color: INK, fontWeight: 700 },
+  marcaApp: { padding: "10px 22px 14px", borderBottom: `1px solid ${INK}` },
+  marcaTexto: { fontFamily: "Archivo", fontWeight: 900, fontSize: 20, letterSpacing: 0.5 },
+  marcaSub: { fontFamily: "Space Mono", fontSize: 9, letterSpacing: 1, color: GRAY_D, marginTop: 3 },
+  contenido: { flex: 1, overflowY: "auto", padding: "20px 22px 10px" },
+  eyebrow: { fontFamily: "Space Mono", fontSize: 10, letterSpacing: 1.2, color: GRAY_D, marginBottom: 6 },
+  h1: { fontFamily: "Archivo", fontWeight: 900, fontSize: 30, margin: "0 0 4px", letterSpacing: -0.5 },
+  h2: { fontFamily: "Archivo", fontWeight: 700, fontSize: 16, margin: "26px 0 14px" },
+  metaRow: { fontFamily: "Space Mono", fontSize: 10, color: GRAY_D, letterSpacing: 0.5, marginBottom: 14 },
+  parrafo: { fontSize: 14, color: GRAY_D, lineHeight: 1.55, margin: "0 0 4px" },
+  dialWrap: { display: "flex", flexDirection: "column", alignItems: "center", margin: "10px 0 6px", position: "relative" },
+  estadoTag: { fontFamily: "Space Mono", fontWeight: 700, fontSize: 12, letterSpacing: 2, border: "1.5px solid " + INK, padding: "5px 14px", marginTop: -8 },
+  legend: { display: "flex", justifyContent: "center", gap: 18, margin: "18px 0 6px" },
+  legendRow: { display: "flex", flexDirection: "column", alignItems: "center", fontFamily: "Space Mono", fontSize: 10, color: GRAY_D, gap: 3 },
+  enlaceFormula: { background: "none", border: "none", padding: 0, marginTop: 16, fontFamily: "Space Mono", fontSize: 11, letterSpacing: 0.5, color: INK, cursor: "pointer", textDecoration: "underline" },
+  cajaFormula: { border: "1px solid " + INK, padding: 14, marginTop: 12 },
+  filaFormula: { display: "flex", justifyContent: "space-between", fontFamily: "Space Mono", fontSize: 11, padding: "4px 0", color: GRAY_D },
+  filaInsignia: { display: "flex", alignItems: "center", gap: 14, padding: "14px 0", borderBottom: "1px solid #D8D5CB" },
+  iconoInsignia: { width: 40, height: 40, border: "1.5px solid " + INK, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 },
+  filaBarista: { display: "flex", alignItems: "center", gap: 12, padding: 12, border: "1.5px solid", marginBottom: 10, transition: "border-color .15s" },
+  numeroBarista: { width: 26, height: 26, border: "1.5px solid " + INK, display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "Space Mono", fontWeight: 700, fontSize: 12, flexShrink: 0 },
+  botonContactar: { background: INK, color: PAPER, border: "none", padding: "9px 14px", fontFamily: "Space Mono", fontSize: 11, letterSpacing: 0.5, cursor: "pointer" },
+  tabBar: { display: "flex", borderTop: "1px solid " + INK, padding: "10px 10px 4px" },
+  tabBtn: { flex: 1, background: "none", border: "none", display: "flex", flexDirection: "column", alignItems: "center", gap: 3, padding: "4px 0 10px", cursor: "pointer", position: "relative", fontFamily: "inherit" },
+  tabNum: { fontFamily: "Space Mono", fontSize: 9, color: INK },
+  tabTitulo: { fontFamily: "Archivo", fontWeight: 700, fontSize: 12, color: INK },
+  tabIndicador: { position: "absolute", bottom: 0, width: 26, height: 2, background: INK },
+  homeIndicator: { position: "absolute", bottom: 6, left: "50%", transform: "translateX(-50%)", width: 120, height: 4, borderRadius: 3, background: INK },
+  notaPie: { fontFamily: "Space Mono", fontSize: 10, color: GRAY_D, marginTop: 14, letterSpacing: 0.5 },
+
+  cambiarPerfil: { background: "none", border: "1px solid " + INK, padding: "5px 10px", fontFamily: "Space Mono", fontSize: 10, letterSpacing: 0.5, color: INK, cursor: "pointer", flexShrink: 0 },
+  landingWrap: { paddingTop: 4 },
+  tileLanding: { width: "100%", display: "flex", alignItems: "flex-start", gap: 14, textAlign: "left", background: PAPER, border: "1.5px solid " + INK, padding: 16, marginTop: 14, cursor: "pointer", fontFamily: "inherit", color: "inherit" },
+  tileNum: { fontFamily: "Space Mono", fontWeight: 700, fontSize: 13, border: "1.5px solid " + INK, width: 30, height: 30, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 },
+  tileTitulo: { fontFamily: "Archivo", fontWeight: 900, fontSize: 18 },
+  tileDesc: { fontSize: 13, color: GRAY_D, marginTop: 4, lineHeight: 1.5 },
+  tileFlecha: { fontSize: 18, alignSelf: "center", flexShrink: 0 },
+  cardIngreso: { border: "1.5px solid " + INK, padding: 16, marginBottom: 14 },
+  estadoTagChico: { fontFamily: "Space Mono", fontWeight: 700, fontSize: 10, letterSpacing: 1, border: "1px solid " + INK, padding: "3px 8px", flexShrink: 0 },
+
+  labelCampo: { fontFamily: "Space Mono", fontSize: 10, letterSpacing: 1, color: GRAY_D, marginBottom: 6 },
+  inputCampo: { width: "100%", border: "none", borderBottom: "1.5px solid " + INK, background: "transparent", padding: "8px 2px", fontFamily: "Inter", fontSize: 15, color: INK, outline: "none", boxSizing: "border-box" },
+  chipsWrap: { display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 18 },
+  chip: { border: "1.5px solid " + INK, background: PAPER, color: INK, padding: "7px 12px", fontSize: 12.5, fontFamily: "Inter", fontWeight: 500, cursor: "pointer" },
+  chipDia: { border: "1.5px solid " + INK, background: PAPER, color: INK, width: 34, height: 34, display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "Space Mono", fontWeight: 700, fontSize: 12, cursor: "pointer" },
+  chipActivo: { background: INK, color: PAPER },
+  filaCheckbox: { display: "flex", gap: 10, alignItems: "flex-start", marginTop: 8, marginBottom: 20 },
+  enlaceTerminos: { background: "none", border: "none", padding: 0, margin: 0, fontFamily: "inherit", fontSize: "inherit", color: INK, fontWeight: 700, textDecoration: "underline", cursor: "pointer" },
+  fondoModalTerminos: { position: "fixed", inset: 0, background: "rgba(10,10,10,0.6)", display: "flex", alignItems: "flex-end", justifyContent: "center", zIndex: 100 },
+  modalTerminos: { background: PAPER, width: "100%", maxWidth: 375, maxHeight: "80vh", overflowY: "auto", padding: "24px 22px", borderTop: "2px solid " + INK },
+  botonCerrarModal: { background: "none", border: "1px solid " + INK, width: 28, height: 28, fontSize: 13, cursor: "pointer", fontFamily: "Space Mono" },
+  checkbox: { width: 20, height: 20, border: "1.5px solid " + INK, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 13, fontWeight: 700, marginTop: 1 },
+  checkboxActivo: { background: INK, color: PAPER },
+  textoCheckbox: { fontSize: 12.5, color: GRAY_D, lineHeight: 1.5 },
+  botonRegistro: { width: "100%", background: INK, color: PAPER, border: "none", padding: "14px", fontFamily: "Space Mono", fontWeight: 700, fontSize: 13, letterSpacing: 1, cursor: "pointer", marginBottom: 24 },
+  mensajeError: { fontFamily: "Space Mono", fontSize: 11, color: "#8A2E20", border: "1px solid #8A2E20", padding: "10px 12px", marginBottom: 16 },
+  enlacePanel: { background: "none", border: "none", padding: 0, marginTop: 22, fontFamily: "Space Mono", fontSize: 10, letterSpacing: 0.5, color: GRAY_D, cursor: "pointer" },
+  filaRegistro: { border: "1px solid " + INK, padding: 14, marginBottom: 12 },
+};
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(<App />);
+</script>
+</body>
+</html>
