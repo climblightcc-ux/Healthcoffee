@@ -2,6 +2,26 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8" />
+<script>
+  // Autolimpieza: elimina cualquier service worker o caché de versiones anteriores
+  // de esta app que pudiera haber quedado atascado en el dispositivo, para que
+  // siempre se cargue la versión más reciente publicada. Envuelto en try/catch
+  // para que nunca pueda romper la carga de la app si algo no es compatible.
+  try {
+    if ("serviceWorker" in navigator && navigator.serviceWorker.getRegistrations) {
+      navigator.serviceWorker.getRegistrations()
+        .then((registros) => registros.forEach((r) => r.unregister()))
+        .catch(() => {});
+    }
+  } catch (e) {}
+  try {
+    if (window.caches && caches.keys) {
+      caches.keys()
+        .then((nombres) => nombres.forEach((n) => caches.delete(n)))
+        .catch(() => {});
+    }
+  } catch (e) {}
+</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>PULSO·CAFÉ — Salud operativa para cafeterías</title>
 <meta name="description" content="Mide el estado de salud de tu cafetería, gana insignias y conecta con baristas especializados cerca de ti." />
@@ -43,7 +63,16 @@ const { useState, useMemo } = React;
    La política de la tabla permite INSERTAR pero no LEER desde aquí. */
 const SUPABASE_URL = "https://sdkkouosgpxeadvqlqux.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_mXD8VUWqd0ScaB7ecad7hw_b_ZtC-EX";
-const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+let supabaseClient = null;
+try {
+  if (window.supabase && window.supabase.createClient) {
+    supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+  } else {
+    console.warn("Supabase no cargó desde el CDN; los formularios mostrarán un aviso en vez de guardar datos.");
+  }
+} catch (e) {
+  console.warn("No se pudo inicializar Supabase:", e);
+}
 
 const INK = "#0A0A0A";
 const PAPER = "#FFFFFF";
@@ -416,6 +445,10 @@ function PantallaRegistroCafeteria({ onRegistrado }) {
 
   const enviarRegistro = async () => {
     setError("");
+    if (!supabaseClient) {
+      setError("No se pudo conectar con el servidor. Verifica tu conexión e intenta de nuevo.");
+      return;
+    }
     setEnviando(true);
     const { error: errorSupabase } = await supabaseClient.from("cafeterias").insert([
       {
@@ -574,6 +607,10 @@ function PantallaRegistroBarista({ onRegistrado }) {
 
   const enviarRegistro = async () => {
     setError("");
+    if (!supabaseClient) {
+      setError("No se pudo conectar con el servidor. Verifica tu conexión e intenta de nuevo.");
+      return;
+    }
     setEnviando(true);
     const diasTexto = dias.map((idx) => DIAS_OPCIONES[idx]);
     const { error: errorSupabase } = await supabaseClient.from("baristas").insert([
@@ -666,6 +703,10 @@ function PantallaPanelLogin({ onEntrar }) {
 
   const entrar = async () => {
     setError("");
+    if (!supabaseClient) {
+      setError("No se pudo conectar con el servidor. Verifica tu conexión e intenta de nuevo.");
+      return;
+    }
     setCargando(true);
     const { error: errorAuth } = await supabaseClient.auth.signInWithPassword({ email: correo, password: clave });
     setCargando(false);
@@ -696,6 +737,7 @@ function PantallaPanelLista() {
   const [error, setError] = useState("");
 
   React.useEffect(() => {
+    if (!supabaseClient) { setError("No se pudo conectar con el servidor."); return; }
     supabaseClient
       .from("baristas")
       .select("*")
@@ -736,6 +778,7 @@ function PantallaPanelCafeterias() {
   const [error, setError] = useState("");
 
   React.useEffect(() => {
+    if (!supabaseClient) { setError("No se pudo conectar con el servidor."); return; }
     supabaseClient
       .from("cafeterias")
       .select("*")
